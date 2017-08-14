@@ -1,0 +1,250 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.openretails</groupId>
+	<artifactId>open-retails-parent-pom</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>open retails master pom</description>
+	<inceptionYear>2017</inceptionYear>
+	<organization>
+		<name>openretails</name>
+		<url>http://www.openretails.in</url>
+	</organization>
+
+	<ciManagement>
+		<system></system>
+		<url></url>
+	</ciManagement>
+	<!-- Sonar URL -->
+	<url></url>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url></url>
+	</issueManagement>
+
+	<prerequisites>
+		<maven>3.2.1</maven>
+	</prerequisites>
+	<developers>
+		<developer>
+			<id>shobhanath.sharma</id>
+			<name>Shobhanath Sharma</name>
+			<email>shobhanath.sharma@outlook.com</email>
+			<roles>
+				<role>Senior Software Engineer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<properties>
+		<spring-boot.version>1.5.2.RELEASE</spring-boot.version>
+		<cloud.dependencies.version>Dalston.SR1</cloud.dependencies.version>
+		<java.version>1.8</java.version>
+		<springfox.swagger.version>2.7.0</springfox.swagger.version>
+		<postgresql.version>9.1-901.jdbc4</postgresql.version>
+		<httpclient.version>4.1.1</httpclient.version>
+		<commons-lang3.version>3.0</commons-lang3.version>
+		<jackson-databind.version>2.6.3</jackson-databind.version>
+		<gson.version>2.6.2</gson.version>
+		<hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
+		<modelmapper.version>1.1.0</modelmapper.version>
+	</properties>
+
+	<!-- Spring boot parent pom -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.2.RELEASE</version>
+	</parent>
+
+	<!-- Dependency management -->
+	<dependencyManagement>
+		<dependencies>
+			<!-- open retails module dependencies start -->
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-common-utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-rest-utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-data</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-data-access</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-profile-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-profile-data-access</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-manager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-profile-manager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-controller</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-profile-controller</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-messages</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- open retails module dependencies end -->
+
+			<!-- spring cloud dependencies start -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${cloud.dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- spring cloud dependencies end -->
+
+			<!-- swagger dependency start -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox.swagger.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox.swagger.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- swagger dependency end -->
+
+			<!-- database dependency start -->
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+			</dependency>
+
+			<!-- database dependency end -->
+
+			<!-- Others utility dependency start -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-databind.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+			<!-- Dependency to map from Model to DTO -->
+			<dependency>
+				<groupId>org.modelmapper</groupId>
+				<artifactId>modelmapper</artifactId>
+				<version>${modelmapper.version}</version>
+			</dependency>
+
+			<!-- Others utility dependency end -->
+		</dependencies>
+	</dependencyManagement>
+
+    
+	<dependencies>
+	    <!-- To reduce code in order to generate setter/getter,toString/hashCode and constructor -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- Plugin management -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>All</id>
+			<modules>
+				<module>open-retails-common-utils</module>
+				<module>open-retails-rest-utils</module>
+				<module>open-retails-core</module>
+			</modules>
+		</profile>
+	</profiles>
+</project>
