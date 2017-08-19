@@ -18,6 +18,9 @@ public interface UserManager {
 
 	ResponseCollection<UserDTO> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
+	UserDTO getActiveUserByUsernameOrPrimaryEmailId(String user)
+			throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+
 	User getCurrentUser();
 
 	void setCurrentUser(Long userId);

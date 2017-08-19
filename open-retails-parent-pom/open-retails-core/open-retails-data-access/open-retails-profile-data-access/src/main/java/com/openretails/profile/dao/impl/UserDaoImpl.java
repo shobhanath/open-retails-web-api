@@ -52,6 +52,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	public User getActiveUserByUsernameOrPrimaryEmailId(String user) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUsernameOrPrimaryEmailIdAndObsoleteTrue(user, user);
+	}
+
+	@Override
 	public Collection<User> update(Collection<User> users)
 			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
 		return create(users);

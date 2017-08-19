@@ -16,5 +16,7 @@ public interface UserDao {
 
 	User getActiveUserById(Long identity);
 
+	User getActiveUserByUsernameOrPrimaryEmailId(String user);
+
 	Collection<User> update(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 }

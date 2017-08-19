@@ -51,7 +51,6 @@ public class UserServices extends GenericExceptionHandler {
 	@ApiOperation(value = "${UserServices.findAllActive.value}", notes = "${UserServices.findAllActive.note}")
 
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
@@ -63,15 +62,18 @@ public class UserServices extends GenericExceptionHandler {
 
 	}
 
-	@ApiOperation(value = "Find pet by Status", notes = "${UserServices.findUsersByName.notes}")
-
+	@ApiOperation(value = "${UserServices.findByName.value}", notes = "${UserServices.findByName.note}")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 500, message = "Something wrong in Server") })
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
 
-	@GetMapping(value = "/users/{user}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/users/{user:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserDTO> findByName(
-			@ApiParam(value = "${UserServices.findUsersByName.user}", required = true) @PathVariable("user") String user) {
-		return new ResponseEntity<UserDTO>(new UserDTO(), HttpStatus.OK);
+			@ApiParam(value = "${UserServices.findByName.user}", required = true) @PathVariable("user") String user) {
+		return new ResponseEntity<UserDTO>(userManager.getActiveUserByUsernameOrPrimaryEmailId(user), HttpStatus.OK);
 
 	}
 
