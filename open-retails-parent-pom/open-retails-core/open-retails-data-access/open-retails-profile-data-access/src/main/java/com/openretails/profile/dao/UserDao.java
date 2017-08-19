@@ -10,7 +10,10 @@ public interface UserDao {
 
 	Collection<User> create(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
-	Collection<User> disable(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> disable(Collection<String> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+
+	Collection<User> enable(Collection<String> users)
+			throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
 	Collection<User> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 

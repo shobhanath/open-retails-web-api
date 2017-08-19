@@ -41,14 +41,21 @@ public class UserManagerImpl implements UserManager {
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Override
-	public Response disable(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException {
-		// TODO Auto-generated method stub
-		return null;
+	public Response disable(Collection<String> users)
+			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+		userDao.disable(users);
+		return new Response("OK");
+
 	}
 
 	@Override
 	public ResponseCollection<UserDTO> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException {
-		return new ResponseCollection<UserDTO>(userMapper.mapUserDTO(userDao.findAll()));
+		final Collection<User> users = userDao.findAll();
+		if (users != null && !users.isEmpty()) {
+			return new ResponseCollection<UserDTO>(userMapper.mapUserDTO(users));
+		}
+		log.error("User details are not available in database");
+		throw new OpenRetailsRuntimeException("User details are not available in database");
 	}
 
 	@Override

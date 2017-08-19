@@ -14,7 +14,7 @@ public interface UserManager {
 	ResponseCollection<UserDTO> create(Collection<UserDTO> users)
 			throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
-	Response disable(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Response disable(Collection<String> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
 	ResponseCollection<UserDTO> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
