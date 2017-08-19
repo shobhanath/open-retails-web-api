@@ -41,9 +41,9 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Collection<User> findAll(Collection<User> users)
+	public Collection<User> findAll()
 			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
-		return userRepository.findAll();
+		return userRepository.findAllObsoleteTrue();
 	}
 
 	@Override

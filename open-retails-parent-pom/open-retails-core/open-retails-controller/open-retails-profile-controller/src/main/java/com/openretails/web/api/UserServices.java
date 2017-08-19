@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openretails.common.exception.format.ExceptionMessage;
 import com.openretails.data.ResponseCollection;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.manager.UserManager;
@@ -30,11 +31,14 @@ public class UserServices extends GenericExceptionHandler {
 	@Autowired
 	private UserManager userManager;
 
-	@ApiOperation(value = "create", notes = "create")
+	@ApiOperation(value = "${UserServices.create.value}", notes = "${UserServices.create.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-
-			@ApiResponse(code = 500, message = "Something wrong in Server") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -42,6 +46,20 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiParam(value = "create", required = true) @RequestBody Collection<UserDTO> users) {
 		return new ResponseEntity<ResponseCollection<UserDTO>>(userManager.create(users), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findAllActive.value}", notes = "${UserServices.findAllActive.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@GetMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<ResponseCollection<UserDTO>> findAllActive() {
+		return new ResponseEntity<ResponseCollection<UserDTO>>(userManager.findAll(), HttpStatus.OK);
 
 	}
 

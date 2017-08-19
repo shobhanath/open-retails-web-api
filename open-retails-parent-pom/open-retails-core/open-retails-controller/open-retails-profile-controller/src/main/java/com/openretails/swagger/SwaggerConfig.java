@@ -5,6 +5,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+	@Value("${profile.release.version}")
+	private String releaseVersion;
 
 	@Bean
 	public Docket api() {
@@ -39,10 +42,9 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		final String title = "Profile Management";
-		final String description = "This is profile management module where profile will be created";
-		final String version = "1.0.0";
-		final String termsOfServiceUrl = "http://www.openretails.in";
+		final String title = "Swagger Profile Management";
+		final String description = "This is profile management server where profile will be created";
+		final String termsOfServiceUrl = "http://www.openretails.in/v2/api-docs";
 		final Contact contact = new Contact("Shobhanath Sharma", "http://www.openretails.in",
 				"shobhanath.sharma@openretails.in");
 		final String license = "openretails";
@@ -67,7 +69,7 @@ public class SwaggerConfig {
 
 		vendorExtensions.add(vendorExtension);
 
-		final ApiInfo apiInfo = new ApiInfo(title, description, version, termsOfServiceUrl, contact, license,
+		final ApiInfo apiInfo = new ApiInfo(title, description, releaseVersion, termsOfServiceUrl, contact, license,
 				licenseUrl, vendorExtensions);
 		return apiInfo;
 	}

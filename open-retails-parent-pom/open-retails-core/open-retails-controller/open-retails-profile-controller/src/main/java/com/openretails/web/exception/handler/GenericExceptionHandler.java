@@ -27,7 +27,8 @@ public class GenericExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({ OpenRetailsBusinessException.class, OpenRetailsValidationException.class,
 			OpenRetailsNotAuthorizedException.class, OpenRetailsNotAuthorizedException.class,
-			OpenRetailsDataAccessException.class, OpenRetailsRuntimeException.class, OpenRetailsException.class })
+			OpenRetailsDataAccessException.class, OpenRetailsRuntimeException.class, OpenRetailsException.class,
+			Exception.class })
 	public ResponseEntity<ExceptionMessage> handleCustomException(Exception ex, WebRequest request) {
 		final ExceptionMessage exceptionMessage = new ExceptionMessage();
 		exceptionMessage.setErrorMessage(ex.getMessage());

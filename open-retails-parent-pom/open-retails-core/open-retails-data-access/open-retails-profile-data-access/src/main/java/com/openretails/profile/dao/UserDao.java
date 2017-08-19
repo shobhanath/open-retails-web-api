@@ -12,7 +12,7 @@ public interface UserDao {
 
 	Collection<User> disable(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
-	Collection<User> findAll(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
 	User getActiveUserById(Long identity);
 

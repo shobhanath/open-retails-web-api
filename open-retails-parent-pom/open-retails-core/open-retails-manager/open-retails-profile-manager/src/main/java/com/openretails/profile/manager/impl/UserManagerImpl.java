@@ -1,7 +1,6 @@
 package com.openretails.profile.manager.impl;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,10 +43,8 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public List<User> findAll(Collection<User> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseCollection<UserDTO> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+		return new ResponseCollection<UserDTO>(userMapper.mapUserDTO(userDao.findAll()));
 	}
 
 	@Override

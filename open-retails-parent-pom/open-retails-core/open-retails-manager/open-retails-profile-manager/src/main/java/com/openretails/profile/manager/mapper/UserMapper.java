@@ -22,6 +22,7 @@ public class UserMapper {
 	public UserDTO map(User user) {
 		final UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 		userDTO.setUserTypeId(user.getUserType().getIdentity());
+		userDTO.setPassword(null);
 		return userDTO;
 	}
 

@@ -1,7 +1,6 @@
 package com.openretails.profile.manager;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.openretails.common.exception.OpenRetailsRuntimeException;
 import com.openretails.common.exception.OpenRetailsValidationException;
@@ -17,7 +16,7 @@ public interface UserManager {
 
 	Response disable(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
-	List<User> findAll(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	ResponseCollection<UserDTO> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
 
 	User getCurrentUser();
 
