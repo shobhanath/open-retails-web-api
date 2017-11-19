@@ -12,9 +12,10 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.openretails.profile.model.support.BaseEntity;
+import com.openretails.profile.model.support.TableNames;
 
 @Entity
-@Table(name = "T_USER")
+@Table(name = TableNames.USER)
 public class User extends BaseEntity {
 
 	private static final long serialVersionUID = -3578663668010710336L;
