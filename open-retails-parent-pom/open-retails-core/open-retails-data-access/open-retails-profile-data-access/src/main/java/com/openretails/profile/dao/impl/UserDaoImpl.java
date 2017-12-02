@@ -3,6 +3,7 @@ package com.openretails.profile.dao.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
@@ -85,13 +86,17 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getActiveUserById(Long identity) {
-		return userRepository.findByIdentityAndObsoleteTrue(identity);
+		final Optional<User> optionalUser = userRepository.findByIdentityAndObsoleteTrue(identity);
+		optionalUser.orElseThrow(() -> new OpenRetailsRuntimeException("Username not found by identity : " + identity));
+		return optionalUser.get();
 	}
 
 	@Override
 	public User getActiveUserByUsernameOrPrimaryEmailId(String user) {
-		// TODO Auto-generated method stub
-		return userRepository.findByUsernameOrPrimaryEmailIdAndObsoleteTrue(user, user);
+		final Optional<User> optionalUser = userRepository.findByUsernameOrPrimaryEmailIdAndObsoleteTrue(user, user);
+		optionalUser.orElseThrow(
+				() -> new OpenRetailsRuntimeException("Username not found by username or email : " + user));
+		return optionalUser.get();
 	}
 
 	@Override

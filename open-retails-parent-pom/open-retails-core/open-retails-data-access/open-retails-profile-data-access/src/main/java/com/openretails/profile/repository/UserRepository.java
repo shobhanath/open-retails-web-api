@@ -1,6 +1,7 @@
 package com.openretails.profile.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,8 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("Select u from User u where u.obsolete=true")
 	Collection<User> findAllObsoleteTrue();
 
-	User findByIdentityAndObsoleteTrue(Long identity);
+	Optional<User> findByIdentityAndObsoleteTrue(Long identity);
 
-	User findByUsernameOrPrimaryEmailIdAndObsoleteTrue(String name, String primaryEmail);
+	Optional<User> findByUsernameOrPrimaryEmailIdAndObsoleteTrue(String name, String primaryEmail);
 
 }

@@ -1,34 +1,49 @@
 package com.openretails.web.security;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.openretails.profile.manager.CustomUserDetailsManager;
+
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private DataSource dataSource;
+	private CustomUserDetailsManager userDetailsManager;
 
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		final String findUserQuery = "select username,password,enabled " + "from T_USER " + "where username = ?";
-		final String findRoles = "select username,role " + "from Roles " + "where username = ?";
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery(findUserQuery)
-				.authoritiesByUsernameQuery(findRoles);
+		auth.userDetailsService(userDetailsManager).passwordEncoder(getPasswordEncoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/**").permitAll().antMatchers(HttpMethod.GET, "/**").hasRole("ADMIN")
-				.anyRequest().authenticated().and().formLogin().permitAll().and().logout().permitAll();
+		http.csrf().disable();
+		http.authorizeRequests().antMatchers("**/secured/**").authenticated().anyRequest().permitAll().and()
+				.httpBasic();
 
+	}
+
+	private PasswordEncoder getPasswordEncoder() {
+		return new PasswordEncoder() {
+			@Override
+			public String encode(CharSequence charSequence) {
+				return charSequence.toString();
+			}
+
+			@Override
+			public boolean matches(CharSequence charSequence, String s) {
+				return true;
+			}
+		};
 	}
 }

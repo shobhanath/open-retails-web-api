@@ -20,6 +20,7 @@ public class Address extends BaseEntity{
 	@NotNull
 	@Column(name = "PIN_CODE", nullable = false)
 	private Long pinCode;
+
 	@NotEmpty
 	@Column(name = "COUNTRY_NAME", nullable = false)
 	private String countryName;
@@ -31,7 +32,62 @@ public class Address extends BaseEntity{
 	@NotEmpty
 	@Column(name = "CITY", nullable = false)
 	private String city;
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Address other = (Address) obj;
+		if (addressFreeText == null) {
+			if (other.addressFreeText != null) {
+				return false;
+			}
+		} else if (!addressFreeText.equals(other.addressFreeText)) {
+			return false;
+		}
+		if (city == null) {
+			if (other.city != null) {
+				return false;
+			}
+		} else if (!city.equals(other.city)) {
+			return false;
+		}
+		if (comment == null) {
+			if (other.comment != null) {
+				return false;
+			}
+		} else if (!comment.equals(other.comment)) {
+			return false;
+		}
+		if (countryCode == null) {
+			if (other.countryCode != null) {
+				return false;
+			}
+		} else if (!countryCode.equals(other.countryCode)) {
+			return false;
+		}
+		if (countryName == null) {
+			if (other.countryName != null) {
+				return false;
+			}
+		} else if (!countryName.equals(other.countryName)) {
+			return false;
+		}
+		if (pinCode == null) {
+			if (other.pinCode != null) {
+				return false;
+			}
+		} else if (!pinCode.equals(other.pinCode)) {
+			return false;
+		}
+		return true;
+	}
 	public String getAddressFreeText() {
 		return addressFreeText;
 	}
@@ -54,6 +110,19 @@ public class Address extends BaseEntity{
 
 	public Long getPinCode() {
 		return pinCode;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (addressFreeText == null ? 0 : addressFreeText.hashCode());
+		result = prime * result + (city == null ? 0 : city.hashCode());
+		result = prime * result + (comment == null ? 0 : comment.hashCode());
+		result = prime * result + (countryCode == null ? 0 : countryCode.hashCode());
+		result = prime * result + (countryName == null ? 0 : countryName.hashCode());
+		result = prime * result + (pinCode == null ? 0 : pinCode.hashCode());
+		return result;
 	}
 
 	public void setAddressFreeText(String addressFreeText) {
