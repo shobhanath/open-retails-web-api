@@ -6,7 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component("doaConfiguration")
+import com.openretails.common.constant.SpringBeanIds;
+
+@Component(SpringBeanIds.DAO_CONFIGURATION)
 public class DaoConfiguration {
 
 	@Bean

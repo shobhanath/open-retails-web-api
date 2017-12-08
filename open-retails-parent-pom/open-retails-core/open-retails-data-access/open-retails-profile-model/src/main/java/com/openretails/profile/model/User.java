@@ -41,12 +41,8 @@ public class User extends BaseEntity {
 	@NotEmpty
 	@Column(name = "PRIMARY_EMAIL_ID", nullable = false, length = 255)
 	private String primaryEmailId;
-	@Column(name = "SECONDARY_EMAIL_ID", nullable = false, length = 255)
-	private String secondaryEmailId;
 	@Column(name = "PRIMARY_MOBILE_NUMBER", nullable = false, length = 10)
 	private Long primaryMobileNumber;
-	@Column(name = "SECONDARY_MOBILE_NUMBER", nullable = false, length = 10)
-	private Long secondaryMobileNumber;
 	@NotEmpty
 	@Column(name = "PASSWORD", nullable = false, length = 60)
 	private String password;
@@ -58,11 +54,8 @@ public class User extends BaseEntity {
 	@NotEmpty
 	@Column(name = "USER_NAME", nullable = false, length = 255)
 	private String username;
-	@Column(name = "LOCALE", nullable = false, length = 255)
-	private String locale;
 
-	@ManyToOne
-	@JoinColumn(name = "USER_TYPE_ID")
+	@Enumerated(EnumType.ORDINAL)
 	private UserType userType;
 
 	@JoinColumn(name = "PERMANENT_ADDRESS_ID")
@@ -88,7 +81,6 @@ public class User extends BaseEntity {
 
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public User(User user) {
@@ -99,14 +91,11 @@ public class User extends BaseEntity {
 		isMobileVerified = user.isMobileVerified();
 		isEmailVerified = user.isEmailVerified();
 		primaryEmailId = user.getPrimaryEmailId();
-		secondaryEmailId = user.getSecondaryEmailId();
 		primaryMobileNumber = user.getPrimaryMobileNumber();
-		secondaryMobileNumber = user.getSecondaryMobileNumber();
 		password = user.getPassword();
 		comment = user.getComment();
 		title = user.getTitle();
 		username = user.getUsername();
-		locale = user.getLocale();
 		userType = user.getUserType();
 		permanentAddress = user.getPermanentAddress();
 		secondaryAddress = user.getSecondaryAddress();
@@ -165,13 +154,6 @@ public class User extends BaseEntity {
 		} else if (!lastName.equals(other.lastName)) {
 			return false;
 		}
-		if (locale == null) {
-			if (other.locale != null) {
-				return false;
-			}
-		} else if (!locale.equals(other.locale)) {
-			return false;
-		}
 		if (middleName == null) {
 			if (other.middleName != null) {
 				return false;
@@ -224,20 +206,6 @@ public class User extends BaseEntity {
 		} else if (!secondaryAddress.equals(other.secondaryAddress)) {
 			return false;
 		}
-		if (secondaryEmailId == null) {
-			if (other.secondaryEmailId != null) {
-				return false;
-			}
-		} else if (!secondaryEmailId.equals(other.secondaryEmailId)) {
-			return false;
-		}
-		if (secondaryMobileNumber == null) {
-			if (other.secondaryMobileNumber != null) {
-				return false;
-			}
-		} else if (!secondaryMobileNumber.equals(other.secondaryMobileNumber)) {
-			return false;
-		}
 		if (title == null) {
 			if (other.title != null) {
 				return false;
@@ -282,9 +250,6 @@ public class User extends BaseEntity {
 		return lastName;
 	}
 
-	public String getLocale() {
-		return locale;
-	}
 
 	public String getMiddleName() {
 		return middleName;
@@ -318,14 +283,6 @@ public class User extends BaseEntity {
 		return secondaryAddress;
 	}
 
-	public String getSecondaryEmailId() {
-		return secondaryEmailId;
-	}
-
-	public Long getSecondaryMobileNumber() {
-		return secondaryMobileNumber;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -349,7 +306,6 @@ public class User extends BaseEntity {
 		result = prime * result + (isEmailVerified ? 1231 : 1237);
 		result = prime * result + (isMobileVerified ? 1231 : 1237);
 		result = prime * result + (lastName == null ? 0 : lastName.hashCode());
-		result = prime * result + (locale == null ? 0 : locale.hashCode());
 		result = prime * result + (middleName == null ? 0 : middleName.hashCode());
 		result = prime * result + (password == null ? 0 : password.hashCode());
 		result = prime * result + (permanentAddress == null ? 0 : permanentAddress.hashCode());
@@ -360,8 +316,6 @@ public class User extends BaseEntity {
 		temp = Double.doubleToLongBits(salary);
 		result = prime * result + (int) (temp ^ temp >>> 32);
 		result = prime * result + (secondaryAddress == null ? 0 : secondaryAddress.hashCode());
-		result = prime * result + (secondaryEmailId == null ? 0 : secondaryEmailId.hashCode());
-		result = prime * result + (secondaryMobileNumber == null ? 0 : secondaryMobileNumber.hashCode());
 		result = prime * result + (title == null ? 0 : title.hashCode());
 		result = prime * result + (userType == null ? 0 : userType.hashCode());
 		result = prime * result + (username == null ? 0 : username.hashCode());
@@ -400,10 +354,6 @@ public class User extends BaseEntity {
 		this.lastName = lastName;
 	}
 
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
@@ -439,14 +389,6 @@ public class User extends BaseEntity {
 
 	public void setSecondaryAddress(Address secondaryAddress) {
 		this.secondaryAddress = secondaryAddress;
-	}
-
-	public void setSecondaryEmailId(String secondaryEmailId) {
-		this.secondaryEmailId = secondaryEmailId;
-	}
-
-	public void setSecondaryMobileNumber(Long secondaryMobileNumber) {
-		this.secondaryMobileNumber = secondaryMobileNumber;
 	}
 
 	public void setTitle(String title) {

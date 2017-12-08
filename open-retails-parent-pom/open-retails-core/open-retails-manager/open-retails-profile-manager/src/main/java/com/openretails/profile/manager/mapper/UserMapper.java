@@ -7,28 +7,24 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.model.User;
-import com.openretails.profile.repository.UserTypeRepository;
 
-@Component("userMapper")
+@Component(SpringBeanIds.USER_MAPPER)
 public class UserMapper {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@Autowired
-	private UserTypeRepository userTypeRepository;
 
 	public UserDTO map(User user) {
 		final UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-		userDTO.setUserTypeId(user.getUserType().getIdentity());
 		userDTO.setPassword(null);
 		return userDTO;
 	}
 
 	public User map(UserDTO userDTO) {
 		final User user = modelMapper.map(userDTO, User.class);
-		user.setUserType(userTypeRepository.findByIdentityAndObsoleteTrue(userDTO.getUserTypeId()));
 		return user;
 	}
 

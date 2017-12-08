@@ -2,24 +2,32 @@ package com.openretails.profile.dao;
 
 import java.util.Collection;
 
-import com.openretails.common.exception.OpenRetailsRuntimeException;
-import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.profile.model.User;
 
 public interface UserDao {
 
-	Collection<User> create(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> create(Collection<User> users);
 
-	Collection<User> disable(Collection<String> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> enableOrDisable(Collection<String> users, boolean isEnabled);
 
-	Collection<User> enable(Collection<String> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> findAll(Boolean flag);
 
-	Collection<User> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	Collection<User> findById(Collection<Long> identity, Boolean flag);
 
-	User getActiveUserById(Long identity);
+	User findById(Long identity, Boolean flag);
 
-	User getActiveUserByUsernameOrPrimaryEmailId(String user);
+	Collection<User> findByUser(Collection<String> user, Boolean flag);
 
-	Collection<User> update(Collection<User> users) throws OpenRetailsValidationException, OpenRetailsRuntimeException;
+	User findByUser(String user, Boolean flag);
+
+	Collection<Long> findIdByUser(Collection<String> user, Boolean flag);
+
+	Long findIdByUser(String user, Boolean flag);
+
+	Collection<String> findUsernameById(Collection<Long> identity, Boolean flag);
+
+	String findUsernameById(Long identity, Boolean flag);
+
+	Collection<User> update(Collection<User> users);
+
 }

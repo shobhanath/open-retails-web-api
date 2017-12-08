@@ -1,27 +1,23 @@
 package com.openretails.profile.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.openretails.common.constant.DataAccessMessages;
+import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsRuntimeException;
 import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.profile.dao.UserDao;
 import com.openretails.profile.model.User;
 import com.openretails.profile.repository.UserRepository;
 
-@Repository("userDao")
+@Repository(SpringBeanIds.USER_DAO)
 public class UserDaoImpl implements UserDao {
-
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private UserRepository userRepository;
@@ -30,73 +26,155 @@ public class UserDaoImpl implements UserDao {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public Collection<User> create(Collection<User> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+	public Collection<User> create(Collection<User> users) {
 		try {
-			final List<User> concurrentList = new CopyOnWriteArrayList<>();
-			concurrentList.addAll(users);
-			for (final User user : concurrentList) {
-				user.setPassword(passwordEncoder.encode(user.getPassword()));
-			}
-			return userRepository.save(concurrentList);
-		} catch (final Exception e) {
-			log.error("Failed to create users : ", e.getCause());
-			throw new OpenRetailsRuntimeException("Failed to create users : " + e.getMessage(), e.getCause());
+			final Collection<User> userCollection = users.stream().map(existingUser -> {
+				existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+				return existingUser;
+			}).collect(Collectors.toList());
+
+			return userRepository.save(userCollection);
+
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(DataAccessMessages.FAILED_CREATE_USERS + exception.getMessage(),
+					exception.getCause());
 		}
 	}
 
 	@Override
-	public Collection<User> disable(Collection<String> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+	public Collection<User> enableOrDisable(Collection<String> users, boolean isEnabled) {
 		try {
-			final List<User> userList = new ArrayList<>();
-			for (final String emailAddress : users) {
-				final User user = getActiveUserByUsernameOrPrimaryEmailId(emailAddress);
-				user.setObsolete(false);
-				userList.add(user);
-			}
-			return userRepository.save(userList);
-		} catch (final Exception e) {
-			log.error("Failed to disable list of users : ", e.getCause());
-			throw new OpenRetailsRuntimeException("Failed to disable list of users : " + e.getMessage(), e.getCause());
+			final Optional<Collection<User>> optionalUsers = userRepository.findByUsernameOrPrimaryEmailId(users,
+					users);
+			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.USERS_NOT_FOUND));
+			final Collection<User> userCollection = optionalUsers.get().stream().map(existingUser -> {
+				existingUser.setObsolete(isEnabled);
+				return existingUser;
+			}).collect(Collectors.toList());
+			return userRepository.save(userCollection);
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(
+					isEnabled ? DataAccessMessages.FAILED_TO_ENABLE_USERS
+							: DataAccessMessages.FAILED_TO_DISABLE_USERS + exception.getMessage(),
+					exception.getCause());
 		}
 	}
 
 	@Override
-	public Collection<User> enable(Collection<String> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+	public Collection<User> findAll(Boolean flag) {
 		try {
-			final List<User> userList = new ArrayList<>();
-			for (final String emailAddress : users) {
-				final User user = getActiveUserByUsernameOrPrimaryEmailId(emailAddress);
-				user.setObsolete(true);
-				userList.add(user);
-			}
-			return userRepository.save(userList);
-		} catch (final Exception e) {
-			log.error("Failed to enable list of users : ", e.getCause());
-			throw new OpenRetailsRuntimeException("Failed to enable list of users : " + e.getMessage(), e.getCause());
+			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.getAll()
+					: userRepository.findAll(flag);
+			optionalUsers
+					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_ALL_USERS));
+			return optionalUsers.get();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
 		}
 	}
 
 	@Override
-	public Collection<User> findAll() throws OpenRetailsValidationException, OpenRetailsRuntimeException {
-		return userRepository.findAllObsoleteTrue();
+	public Collection<User> findById(Collection<Long> identities, Boolean flag) {
+		try {
+			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.findByIdentity(identities)
+					: userRepository.findByIdentity(flag, identities);
+			optionalUsers
+					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
+			return optionalUsers.get();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+
 	}
 
 	@Override
-	public User getActiveUserById(Long identity) {
-		final Optional<User> optionalUser = userRepository.findByIdentityAndObsoleteTrue(identity);
-		optionalUser.orElseThrow(() -> new OpenRetailsRuntimeException("Username not found by identity : " + identity));
-		return optionalUser.get();
+	public User findById(Long identity, Boolean flag) {
+		try {
+			final Optional<User> optionalUsers = null == flag ? userRepository.findByIdentity(identity)
+					: userRepository.findByIdentity(flag, identity);
+			optionalUsers
+					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
+			return optionalUsers.get();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
 	}
 
 	@Override
-	public User getActiveUserByUsernameOrPrimaryEmailId(String user) {
-		final Optional<User> optionalUser = userRepository.findByUsernameOrPrimaryEmailIdAndObsoleteTrue(user, user);
-		optionalUser.orElseThrow(
-				() -> new OpenRetailsRuntimeException("Username not found by username or email : " + user));
-		return optionalUser.get();
+	public Collection<User> findByUser(Collection<String> users, Boolean flag) {
+
+		try {
+			final Collection<String> userCollection = users.stream().map(existingUser -> {
+				return existingUser.trim().toLowerCase();
+			}).collect(Collectors.toList());
+
+			final Optional<Collection<User>> optionalUsers = null == flag
+					? userRepository.findByUsernameOrPrimaryEmailId(userCollection, userCollection)
+					: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userCollection, userCollection);
+			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(
+					DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
+			return optionalUsers.get();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+
+	}
+
+	@Override
+	public User findByUser(String user, Boolean flag) {
+
+		try {
+			user = user.trim().toLowerCase();
+			final Optional<User> optionalUsers = null == flag
+					? userRepository.findByUsernameOrPrimaryEmailId(user, user)
+					: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, user, user);
+			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(
+					DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
+			return optionalUsers.get();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+
+	}
+
+	@Override
+	public Collection<Long> findIdByUser(Collection<String> user, Boolean flag) {
+		try {
+			return findByUser(user, flag).stream().map(existingUser -> {
+				return existingUser.getIdentity();
+			}).collect(Collectors.toList());
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+	}
+
+	@Override
+	public Long findIdByUser(String user, Boolean flag) {
+		try {
+			return findByUser(user, flag).getIdentity();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+	}
+
+	@Override
+	public Collection<String> findUsernameById(Collection<Long> identities, Boolean flag) {
+		try {
+			return findById(identities, flag).stream().map(existingUser -> {
+				return existingUser.getUsername();
+			}).collect(Collectors.toList());
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
+	}
+
+	@Override
+	public String findUsernameById(Long identity, Boolean flag) {
+		try {
+			return findById(identity, flag).getUsername();
+		} catch (final Exception exception) {
+			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+		}
 	}
 
 	@Override

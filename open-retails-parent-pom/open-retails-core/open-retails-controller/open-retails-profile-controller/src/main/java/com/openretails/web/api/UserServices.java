@@ -1,7 +1,5 @@
 package com.openretails.web.api;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openretails.common.exception.format.ExceptionMessage;
-import com.openretails.data.ResponseCollection;
+import com.openretails.data.Collections;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.manager.UserManager;
 import com.openretails.web.exception.handler.GenericExceptionHandler;
@@ -43,10 +41,11 @@ public class UserServices extends GenericExceptionHandler {
 
 	@PostMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<ResponseCollection<UserDTO>> create(
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<UserDTO>> create(
 
-	@ApiParam(value = "create", required = true) @RequestBody Collection<UserDTO> users) {
-		return new ResponseEntity<ResponseCollection<UserDTO>>(userManager.create(users), HttpStatus.OK);
+	@ApiParam(value = "create", required = true) @RequestBody Collections<UserDTO> users) {
+		return new ResponseEntity<Collections<UserDTO>>(userManager.create(users), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.findAllActive.value}", notes = "${UserServices.findAllActive.note}")
@@ -61,8 +60,8 @@ public class UserServices extends GenericExceptionHandler {
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 
-	public ResponseEntity<ResponseCollection<UserDTO>> findAllActive() {
-		return new ResponseEntity<ResponseCollection<UserDTO>>(userManager.findAll(), HttpStatus.OK);
+	public ResponseEntity<Collections<UserDTO>> findAllActive() {
+		return null;
 
 	}
 
@@ -77,7 +76,7 @@ public class UserServices extends GenericExceptionHandler {
 	@GetMapping(value = "/users/{user:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserDTO> findByName(
 			@ApiParam(value = "${UserServices.findByName.user}", required = true) @PathVariable("user") String user) {
-		return new ResponseEntity<UserDTO>(userManager.getActiveUserByUsernameOrPrimaryEmailId(user), HttpStatus.OK);
+		return null;
 
 	}
 
