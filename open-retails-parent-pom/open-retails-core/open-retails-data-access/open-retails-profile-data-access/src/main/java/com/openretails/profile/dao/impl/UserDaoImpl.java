@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.openretails.common.constant.DataAccessMessages;
 import com.openretails.common.constant.SpringBeanIds;
-import com.openretails.common.exception.OpenRetailsRuntimeException;
+import com.openretails.common.exception.OpenRetailsDataAccessException;
 import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.profile.dao.UserDao;
 import com.openretails.profile.model.User;
@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
 			return userRepository.save(userCollection);
 
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(DataAccessMessages.FAILED_CREATE_USERS + exception.getMessage(),
+			throw new OpenRetailsDataAccessException(DataAccessMessages.FAILED_CREATE_USERS + exception.getMessage(),
 					exception.getCause());
 		}
 	}
@@ -46,14 +46,14 @@ public class UserDaoImpl implements UserDao {
 		try {
 			final Optional<Collection<User>> optionalUsers = userRepository.findByUsernameOrPrimaryEmailId(users,
 					users);
-			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.USERS_NOT_FOUND));
+			optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.USERS_NOT_FOUND));
 			final Collection<User> userCollection = optionalUsers.get().stream().map(existingUser -> {
 				existingUser.setObsolete(isEnabled);
 				return existingUser;
 			}).collect(Collectors.toList());
 			return userRepository.save(userCollection);
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(
+			throw new OpenRetailsDataAccessException(
 					isEnabled ? DataAccessMessages.FAILED_TO_ENABLE_USERS
 							: DataAccessMessages.FAILED_TO_DISABLE_USERS + exception.getMessage(),
 					exception.getCause());
@@ -66,10 +66,11 @@ public class UserDaoImpl implements UserDao {
 			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.getAll()
 					: userRepository.findAll(flag);
 			optionalUsers
-					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_ALL_USERS));
+.orElseThrow(
+					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_ALL_USERS));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -79,10 +80,11 @@ public class UserDaoImpl implements UserDao {
 			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.findByIdentity(identities)
 					: userRepository.findByIdentity(flag, identities);
 			optionalUsers
-					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
+.orElseThrow(
+					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 
 	}
@@ -93,10 +95,11 @@ public class UserDaoImpl implements UserDao {
 			final Optional<User> optionalUsers = null == flag ? userRepository.findByIdentity(identity)
 					: userRepository.findByIdentity(flag, identity);
 			optionalUsers
-					.orElseThrow(() -> new OpenRetailsRuntimeException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
+.orElseThrow(
+					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -111,11 +114,11 @@ public class UserDaoImpl implements UserDao {
 			final Optional<Collection<User>> optionalUsers = null == flag
 					? userRepository.findByUsernameOrPrimaryEmailId(userCollection, userCollection)
 					: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userCollection, userCollection);
-			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(
+			optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(
 					DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 
 	}
@@ -128,11 +131,11 @@ public class UserDaoImpl implements UserDao {
 			final Optional<User> optionalUsers = null == flag
 					? userRepository.findByUsernameOrPrimaryEmailId(user, user)
 					: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, user, user);
-			optionalUsers.orElseThrow(() -> new OpenRetailsRuntimeException(
+			optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(
 					DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 
 	}
@@ -144,7 +147,7 @@ public class UserDaoImpl implements UserDao {
 				return existingUser.getIdentity();
 			}).collect(Collectors.toList());
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -153,7 +156,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			return findByUser(user, flag).getIdentity();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -164,7 +167,7 @@ public class UserDaoImpl implements UserDao {
 				return existingUser.getUsername();
 			}).collect(Collectors.toList());
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -173,13 +176,13 @@ public class UserDaoImpl implements UserDao {
 		try {
 			return findById(identity, flag).getUsername();
 		} catch (final Exception exception) {
-			throw new OpenRetailsRuntimeException(exception.getMessage(), exception.getCause());
+			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 	}
 
 	@Override
 	public Collection<User> update(Collection<User> users)
-			throws OpenRetailsValidationException, OpenRetailsRuntimeException {
+			throws OpenRetailsValidationException, OpenRetailsDataAccessException {
 		return create(users);
 	}
 
