@@ -1,9 +1,6 @@
 package com.openretails.common.constant;
 
 public interface BusinessMessages {
-	String VALIDATE_COUNTY_CODE = "Country code should not be null or empty";
-	String VALIDATE_COUNTRY_NAME = "Country name should not be null or empty";
-	String VALIDATE_CITY = "City should not be null or empty";
 	String VALIDATE_FULL_ADDRESS = "Full address should not be null or empty";
 	String VALIDATE_AGE = "Age must be between 1 and 100";
 	String VALIDATE_PRIMARY_MOBILE_NUMBER = "Primary mobile number must be 10 digits number";

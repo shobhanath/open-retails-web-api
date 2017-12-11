@@ -15,15 +15,6 @@ public final class UserValidator {
 
 	public static void fullValidate(AddressDTO address) {
 		validateObj(address);
-		if (StringUtils.isBlank(address.getCountryCode())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_COUNTY_CODE);
-		}
-		if (StringUtils.isBlank(address.getCountryName())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_COUNTRY_NAME);
-		}
-		if (StringUtils.isBlank(address.getCity())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_CITY);
-		}
 		if (StringUtils.isBlank(address.getAddressFreeText())) {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_FULL_ADDRESS);
 		}

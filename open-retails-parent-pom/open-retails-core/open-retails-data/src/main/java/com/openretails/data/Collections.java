@@ -6,6 +6,10 @@ public class Collections<T> {
 
 	private Collection<T> collections;
 
+	public Collections() {
+		super();
+	}
+
 	public Collections(Collection<T> collections) {
 		super();
 		this.collections = collections;

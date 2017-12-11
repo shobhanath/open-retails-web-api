@@ -44,6 +44,9 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Collection<User> enableOrDisable(Collection<String> users, boolean isEnabled) {
 		try {
+			users = users.stream().map(user -> {
+				return user.trim().toLowerCase();
+			}).collect(Collectors.toList());
 			final Optional<Collection<User>> optionalUsers = userRepository.findByUsernameOrPrimaryEmailId(users,
 					users);
 			optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.USERS_NOT_FOUND));

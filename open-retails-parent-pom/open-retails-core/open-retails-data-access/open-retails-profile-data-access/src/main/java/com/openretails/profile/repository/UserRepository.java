@@ -29,6 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByIdentityAndObsoleteTrue(Long identity);
 
+	@Query("Select u from User u where lower(u.username) in (?1) or lower(u.primaryEmailId) in (?2)")
 	Optional<Collection<User>> findByUsernameOrPrimaryEmailId(Collection<String> names,
 			Collection<String> primaryEmails);
 
@@ -38,7 +39,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<Collection<User>> findByUsernameOrPrimaryEmailIdAndObsolete(boolean flag, Collection<String> names,
 			Collection<String> primaryEmails);
 
-	@Query("Select u from User u where u.obsolete=?1 and lower(u.username) in (?2) or lower(u.primaryEmailId) in (?3)")
+	@Query("Select u from User u where u.obsolete=?1 and ( lower(u.username) in (?2) or lower(u.primaryEmailId) in (?3))")
 	Optional<User> findByUsernameOrPrimaryEmailIdAndObsolete(boolean flag, String name,
 			String primaryEmail);
 

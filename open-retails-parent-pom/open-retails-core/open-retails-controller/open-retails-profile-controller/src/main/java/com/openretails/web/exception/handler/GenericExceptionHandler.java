@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -38,7 +39,7 @@ public class GenericExceptionHandler extends ResponseEntityExceptionHandler {
 			exceptionMessage.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			exceptionMessage.setErrorCode(HttpStatus.BAD_REQUEST.getReasonPhrase());
 			return new ResponseEntity<ExceptionMessage>(exceptionMessage, HttpStatus.BAD_REQUEST);
-		} else if (ex instanceof OpenRetailsNotAuthorizedException) {
+		} else if (ex instanceof AccessDeniedException || ex instanceof OpenRetailsNotAuthorizedException) {
 			exceptionMessage.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 			exceptionMessage.setErrorCode(HttpStatus.UNAUTHORIZED.getReasonPhrase());
 			return new ResponseEntity<>(exceptionMessage, HttpStatus.UNAUTHORIZED);
