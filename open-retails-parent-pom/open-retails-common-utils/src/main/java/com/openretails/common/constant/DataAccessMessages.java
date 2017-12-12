@@ -3,6 +3,7 @@ package com.openretails.common.constant;
 public interface DataAccessMessages {
 	/* User */
 	String FAILED_CREATE_USERS = "Failed to create users : ";
+	String FAILED_UPDATE_USERS = "Failed to update users : ";
 	String USERS_NOT_FOUND = "User not found with the given user details";
 	String FAILED_TO_ENABLE_USERS = "Failed to enable users";
 	String FAILED_TO_DISABLE_USERS = "Failed to disable users";

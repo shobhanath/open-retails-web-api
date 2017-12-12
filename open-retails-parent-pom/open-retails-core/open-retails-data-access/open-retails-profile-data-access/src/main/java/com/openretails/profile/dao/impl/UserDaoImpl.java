@@ -7,16 +7,20 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.openretails.common.constant.DataAccessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsDataAccessException;
 import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.profile.dao.UserDao;
+import com.openretails.profile.model.Address;
 import com.openretails.profile.model.User;
 import com.openretails.profile.repository.UserRepository;
 
 @Repository(SpringBeanIds.USER_DAO)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
@@ -26,15 +30,10 @@ public class UserDaoImpl implements UserDao {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Collection<User> create(Collection<User> users) {
 		try {
-			final Collection<User> userCollection = users.stream().map(existingUser -> {
-				existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
-				return existingUser;
-			}).collect(Collectors.toList());
-
-			return userRepository.save(userCollection);
-
+			return userRepository.save(encodePassword(users));
 		} catch (final Exception exception) {
 			throw new OpenRetailsDataAccessException(DataAccessMessages.FAILED_CREATE_USERS + exception.getMessage(),
 					exception.getCause());
@@ -42,6 +41,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Collection<User> enableOrDisable(Collection<String> users, boolean isEnabled) {
 		try {
 			users = users.stream().map(user -> {
@@ -63,13 +63,20 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
+	private Collection<User> encodePassword(Collection<User> users) {
+		final Collection<User> userCollection = users.stream().map(existingUser -> {
+			existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+			return existingUser;
+		}).collect(Collectors.toList());
+		return userCollection;
+	}
+
 	@Override
 	public Collection<User> findAll(Boolean flag) {
 		try {
 			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.getAll()
 					: userRepository.findAll(flag);
-			optionalUsers
-.orElseThrow(
+			optionalUsers.orElseThrow(
 					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_ALL_USERS));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
@@ -82,8 +89,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.findByIdentity(identities)
 					: userRepository.findByIdentity(flag, identities);
-			optionalUsers
-.orElseThrow(
+			optionalUsers.orElseThrow(
 					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
@@ -97,8 +103,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			final Optional<User> optionalUsers = null == flag ? userRepository.findByIdentity(identity)
 					: userRepository.findByIdentity(flag, identity);
-			optionalUsers
-.orElseThrow(
+			optionalUsers.orElseThrow(
 					() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 			return optionalUsers.get();
 		} catch (final Exception exception) {
@@ -184,9 +189,43 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Collection<User> update(Collection<User> users)
 			throws OpenRetailsValidationException, OpenRetailsDataAccessException {
-		return create(users);
+		try {
+			return userRepository.save(users.stream().map(existingUser -> {
+				return updateUserMapping(existingUser);
+			}).collect(Collectors.toList()));
+		} catch (final Exception exception) {
+			throw new OpenRetailsDataAccessException(DataAccessMessages.FAILED_UPDATE_USERS + exception.getMessage(),
+					exception.getCause());
+		}
+	}
+
+	private User updateUserMapping(User existingUser) {
+		final User dbUser = findById(existingUser.getIdentity(), null);
+		dbUser.setAge(existingUser.getAge());
+		dbUser.setComment(existingUser.getComment());
+		dbUser.setEmailVerified(existingUser.isEmailVerified());
+		dbUser.setFirstName(existingUser.getFirstName());
+		dbUser.setGender(existingUser.getGender());
+		dbUser.setLastName(existingUser.getLastName());
+		dbUser.setMiddleName(existingUser.getMiddleName());
+		dbUser.setMobileVerified(existingUser.isMobileVerified());
+		dbUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+		dbUser.setPrimaryEmailId(existingUser.getPrimaryEmailId());
+		dbUser.setPrimaryMobileNumber(existingUser.getPrimaryMobileNumber());
+		dbUser.setUserType(existingUser.getUserType());
+		dbUser.setUsername(existingUser.getUsername());
+		final Address primaryAddress = dbUser.getPermanentAddress();
+		primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
+		primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
+		primaryAddress.setObsolete(existingUser.getPermanentAddress().isObsolete());
+		final Address secondaryAddress = dbUser.getPermanentAddress();
+		secondaryAddress.setAddressFreeText(existingUser.getSecondaryAddress().getAddressFreeText());
+		secondaryAddress.setComment(existingUser.getSecondaryAddress().getComment());
+		secondaryAddress.setObsolete(existingUser.getSecondaryAddress().isObsolete());
+		return dbUser;
 	}
 
 }

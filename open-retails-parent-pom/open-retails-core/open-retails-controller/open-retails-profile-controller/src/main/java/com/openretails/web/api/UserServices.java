@@ -221,5 +221,23 @@ public class UserServices extends GenericExceptionHandler {
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PutMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<UserDTO>> update(
+
+	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
+		return new ResponseEntity<Collections<UserDTO>>(userManager.update(users), HttpStatus.OK);
+	}
+
 
 }

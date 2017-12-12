@@ -2,8 +2,6 @@ package com.openretails.profile.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsBusinessException;
@@ -17,7 +15,6 @@ import com.openretails.profile.manager.validator.UserValidator;
 import com.openretails.profile.model.User;
 
 @Service(SpringBeanIds.USER_MANAGER)
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserManagerImpl implements UserManager {
 
 	@Autowired
@@ -26,11 +23,10 @@ public class UserManagerImpl implements UserManager {
 	@Autowired
 	private UserMapper userMapper;
 
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Override
 	public Collections<UserDTO> create(Collections<UserDTO> userDTOs) {
 		try {
-			UserValidator.fullValidate(userDTOs.getCollectionObj());
+			UserValidator.fullValidate(userDTOs.getCollectionObj(), false);
 			return new Collections<>(
 					userMapper.mapUserDTO(userDao.create(userMapper.mapUser(userDTOs.getCollectionObj()))));
 
@@ -104,6 +100,7 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> update(Collections<UserDTO> users) {
+		UserValidator.fullValidate(users.getCollectionObj(), true);
 		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollectionObj()))));
 	}
 

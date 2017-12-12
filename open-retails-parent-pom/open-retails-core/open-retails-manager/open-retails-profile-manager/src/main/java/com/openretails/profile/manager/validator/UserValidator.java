@@ -13,26 +13,32 @@ import com.openretails.data.UserDTO;
 
 public final class UserValidator {
 
-	public static void fullValidate(AddressDTO address) {
+	public static void fullValidate(AddressDTO address, boolean isUpdate) {
 		validateObj(address);
+		if (isUpdate) {
+			validateId(address.getIdentity());
+		}
 		if (StringUtils.isBlank(address.getAddressFreeText())) {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_FULL_ADDRESS);
 		}
 	}
 
-	public static <T> void fullValidate(Collection<T> addresses) {
-		for (final Object obj : addresses) {
+	public static <T> void fullValidate(Collection<T> objects, boolean isUpdate) {
+		for (final Object obj : objects) {
 			if (obj instanceof UserDTO) {
-				fullValidate((UserDTO) obj);
+				fullValidate((UserDTO) obj, isUpdate);
 			}
 			if (obj instanceof AddressDTO) {
-				fullValidate((AddressDTO) obj);
+				fullValidate((AddressDTO) obj, isUpdate);
 			}
 		}
 	}
 
-	public static void fullValidate(UserDTO userDTO) {
+	public static void fullValidate(UserDTO userDTO, boolean isUpdate) {
 		validateObj(userDTO);
+		if (isUpdate) {
+			validateId(userDTO.getIdentity());
+		}
 		final Integer age = userDTO.getAge();
 		if (age == null || age <= 0 || age > 100) {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_AGE);
@@ -54,7 +60,7 @@ public final class UserValidator {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PASSWORD);
 		}
 		validateEmailAddress(userDTO.getPrimaryEmailId());
-		fullValidate(userDTO.getPermanentAddress());
+		fullValidate(userDTO.getPermanentAddress(), isUpdate);
 	}
 
 	public static boolean isEmailValid(String emailStr) {
