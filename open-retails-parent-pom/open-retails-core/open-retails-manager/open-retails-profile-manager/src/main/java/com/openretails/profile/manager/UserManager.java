@@ -1,6 +1,7 @@
 package com.openretails.profile.manager;
 
 import com.openretails.data.Collections;
+import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.model.User;
 
@@ -22,11 +23,11 @@ public interface UserManager {
 
 	Collections<Long> findIdByUser(Collections<String> user, Boolean flag);
 
-	Long findIdByUser(String user, Boolean flag);
+	Single<Long> findIdByUser(String user, Boolean flag);
 
 	Collections<String> findUsernameById(Collections<Long> identity, Boolean flag);
 
-	String findUsernameById(Long identity, Boolean flag);
+	Single<String> findUsernameById(Long identity, Boolean flag);
 
 	User getCurrentUser();
 

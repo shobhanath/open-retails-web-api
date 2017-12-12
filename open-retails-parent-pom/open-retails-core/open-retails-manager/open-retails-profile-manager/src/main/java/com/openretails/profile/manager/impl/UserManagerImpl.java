@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsBusinessException;
 import com.openretails.data.Collections;
+import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.dao.UserDao;
 import com.openretails.profile.manager.UserManager;
@@ -79,9 +80,9 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public Long findIdByUser(String user, Boolean flag) {
+	public Single<Long> findIdByUser(String user, Boolean flag) {
 		UserValidator.validateEmailAddress(user);
-		return userDao.findIdByUser(user, flag);
+		return new Single<>(userDao.findIdByUser(user, flag));
 	}
 
 	@Override
@@ -91,9 +92,9 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public String findUsernameById(Long identity, Boolean flag) {
+	public Single<String> findUsernameById(Long identity, Boolean flag) {
 		UserValidator.validateId(identity);
-		return userDao.findUsernameById(identity, flag);
+		return new Single<>(userDao.findUsernameById(identity, flag));
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.openretails.common.constant.ApplicationConstants;
 import com.openretails.common.exception.format.ExceptionMessage;
 import com.openretails.data.Collections;
+import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.manager.UserManager;
 import com.openretails.web.exception.handler.GenericExceptionHandler;
@@ -88,7 +89,7 @@ public class UserServices extends GenericExceptionHandler {
 				HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "${UserServices.findByUser.value}", notes = "${UserServices.findByUser.name}")
+	@ApiOperation(value = "${UserServices.findByUser.value}", notes = "${UserServices.findByUser.note}")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
@@ -107,5 +108,118 @@ public class UserServices extends GenericExceptionHandler {
 				: userManager.findByUser(user, isActive),
 				HttpStatus.OK);
 	}
+
+	@ApiOperation(value = "${UserServices.findIdentitiesByUsernameOrPrimayEmailAddress.value}", notes = "${UserServices.findIdentitiesByUsernameOrPrimayEmailAddress.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/users/get-ids-by-emails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<Long>> findIdentitiesByUsernameOrPrimayEmailAddress(
+			@ApiParam(value = "users", required = true) @RequestBody Collections<String> users,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Collections<Long>>(userManager.findIdByUser(users,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findIdentityByUsernameOrPrimayEmailAddress.value}", notes = "${UserServices.findIdentityByUsernameOrPrimayEmailAddress.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@GetMapping(value = "/users/{user:.+}/id", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Single<Long>> findIdentityByUsernameOrPrimayEmailAddress(
+			@PathVariable("user") @ApiParam(value = "user", required = true) String user,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Single<Long>>(userManager.findIdByUser(user,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findUsernameOrPrimaryEmailByIdentity.value}", notes = "${UserServices.findUsernameOrPrimaryEmailByIdentity.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/users/get-emails-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<String>> findUsernameOrPrimaryEmailByIdentity(
+			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Collections<String>>(userManager.findUsernameById(identities,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findUsernameOrPrimayEmailAddressById.value}", notes = "${UserServices.findUsernameOrPrimayEmailAddressById.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@GetMapping(value = "/users/{user}/email", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Single<String>> findUsernameOrPrimayEmailAddressById(
+			@PathVariable("user") @ApiParam(value = "user", required = true) long user,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Single<String>>(userManager.findUsernameById(user,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findUsersById.value}", notes = "${UserServices.findUsersById.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/users/get-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<UserDTO>> findUsersById(
+			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Collections<UserDTO>>(userManager.findById(identities,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.findUsersByUsernameOrEmail.value}", notes = "${UserServices.findUsersByUsernameOrEmail.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/users/get-by-emails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<UserDTO>> findUsersByUsernameOrEmail(
+			@ApiParam(value = "users", required = true) @RequestBody Collections<String> users,
+			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
+		return new ResponseEntity<Collections<UserDTO>>(userManager.findByUser(users,
+				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
 
 }
