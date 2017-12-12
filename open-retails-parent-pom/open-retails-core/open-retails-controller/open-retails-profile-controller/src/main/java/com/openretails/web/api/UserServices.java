@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -219,6 +220,24 @@ public class UserServices extends GenericExceptionHandler {
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
 		return new ResponseEntity<Collections<UserDTO>>(userManager.findByUser(users,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.partialUpdate.value}", notes = "${UserServices.partialUpdate.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PatchMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<UserDTO>> partialUpdate(
+
+	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
+		return new ResponseEntity<Collections<UserDTO>>(userManager.update(users), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")
