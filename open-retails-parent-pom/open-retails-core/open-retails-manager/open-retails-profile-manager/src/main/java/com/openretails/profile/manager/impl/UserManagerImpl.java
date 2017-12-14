@@ -26,9 +26,9 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public Collections<UserDTO> create(Collections<UserDTO> userDTOs) {
 		try {
-			UserValidator.fullValidate(userDTOs.getCollectionObj(), false);
+			UserValidator.fullValidate(userDTOs.getCollection(), false);
 			return new Collections<>(
-					userMapper.mapUserDTO(userDao.create(userMapper.mapUser(userDTOs.getCollectionObj()))));
+					userMapper.mapUserDTO(userDao.create(userMapper.mapUser(userDTOs.getCollection()))));
 
 		} catch (final Exception e) {
 			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
@@ -37,8 +37,8 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> enableOrDisable(Collections<String> users, boolean isEnabled) {
-		UserValidator.validateEmailAddress(users.getCollectionObj());
-		return new Collections<>(userMapper.mapUserDTO(userDao.enableOrDisable(users.getCollectionObj(), isEnabled)));
+		UserValidator.validateEmailAddress(users.getCollection());
+		return new Collections<>(userMapper.mapUserDTO(userDao.enableOrDisable(users.getCollection(), isEnabled)));
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> findById(Collections<Long> identities, Boolean flag) {
-		return new Collections<>(userMapper.mapUserDTO(userDao.findById(identities.getCollectionObj(), flag)));
+		return new Collections<>(userMapper.mapUserDTO(userDao.findById(identities.getCollection(), flag)));
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> findByUser(Collections<String> users, Boolean flag) {
-		UserValidator.validateEmailAddress(users.getCollectionObj());
-		return new Collections<>(userMapper.mapUserDTO(userDao.findByUser(users.getCollectionObj(), flag)));
+		UserValidator.validateEmailAddress(users.getCollection());
+		return new Collections<>(userMapper.mapUserDTO(userDao.findByUser(users.getCollection(), flag)));
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<Long> findIdByUser(Collections<String> users, Boolean flag) {
-		UserValidator.validateEmailAddress(users.getCollectionObj());
-		return new Collections<>(userDao.findIdByUser(users.getCollectionObj(), flag));
+		UserValidator.validateEmailAddress(users.getCollection());
+		return new Collections<>(userDao.findIdByUser(users.getCollection(), flag));
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<String> findUsernameById(Collections<Long> identities, Boolean flag) {
-		UserValidator.validateId(identities.getCollectionObj());
-		return new Collections<>(userDao.findUsernameById(identities.getCollectionObj(), flag));
+		UserValidator.validateId(identities.getCollection());
+		return new Collections<>(userDao.findUsernameById(identities.getCollection(), flag));
 	}
 
 	@Override
@@ -100,8 +100,8 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> update(Collections<UserDTO> users) {
-		UserValidator.fullValidate(users.getCollectionObj(), true);
-		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollectionObj()))));
+		UserValidator.fullValidate(users.getCollection(), true);
+		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollection()))));
 	}
 
 }

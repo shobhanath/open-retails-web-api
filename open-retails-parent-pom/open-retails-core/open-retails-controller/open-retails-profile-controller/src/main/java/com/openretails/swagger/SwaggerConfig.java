@@ -42,8 +42,8 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		final String title = "Swagger Profile Management";
-		final String description = "This is profile management server where profile will be created";
+		final String title = "PROFILE MANAGEMENT FOR OPEN RETAILS";
+		final String description = "This is profile management services where profile will be created";
 		final String termsOfServiceUrl = "http://www.openretails.in/v2/api-docs";
 		final Contact contact = new Contact("Shobhanath Sharma", "http://www.openretails.in",
 				"shobhanath.sharma@openretails.in");

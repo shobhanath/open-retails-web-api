@@ -217,11 +217,12 @@ public class UserDaoImpl implements UserDao {
 		dbUser.setPrimaryMobileNumber(existingUser.getPrimaryMobileNumber());
 		dbUser.setUserType(existingUser.getUserType());
 		dbUser.setUsername(existingUser.getUsername());
+		dbUser.setObsolete(existingUser.isObsolete());
 		final Address primaryAddress = dbUser.getPermanentAddress();
 		primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
 		primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
 		primaryAddress.setObsolete(existingUser.getPermanentAddress().isObsolete());
-		final Address secondaryAddress = dbUser.getPermanentAddress();
+		final Address secondaryAddress = dbUser.getSecondaryAddress();
 		secondaryAddress.setAddressFreeText(existingUser.getSecondaryAddress().getAddressFreeText());
 		secondaryAddress.setComment(existingUser.getSecondaryAddress().getComment());
 		secondaryAddress.setObsolete(existingUser.getSecondaryAddress().isObsolete());

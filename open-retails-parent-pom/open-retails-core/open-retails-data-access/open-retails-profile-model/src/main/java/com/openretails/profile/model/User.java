@@ -59,11 +59,11 @@ public class User extends BaseEntity {
 	private UserType userType;
 
 	@JoinColumn(name = "PERMANENT_ADDRESS_ID")
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(cascade = { CascadeType.ALL })
 	private Address permanentAddress;
 
 	@JoinColumn(name = "SECONDARY_ADDRESS_ID")
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(cascade = { CascadeType.ALL })
 	private Address secondaryAddress;
 
 	@Column(name = "AGE", nullable = false)
