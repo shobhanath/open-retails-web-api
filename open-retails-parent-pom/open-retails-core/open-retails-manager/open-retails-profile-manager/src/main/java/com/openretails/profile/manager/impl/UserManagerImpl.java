@@ -23,6 +23,7 @@ public class UserManagerImpl implements UserManager {
 	@Autowired
 	private UserMapper userMapper;
 
+
 	@Override
 	public Collections<UserDTO> create(Collections<UserDTO> userDTOs) {
 		try {
@@ -99,9 +100,16 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
+	public Collections<UserDTO> partialUpdate(Collections<UserDTO> users) {
+		UserValidator.partialValidate(users.getCollection());
+		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollection()))));
+	}
+
+	@Override
 	public Collections<UserDTO> update(Collections<UserDTO> users) {
 		UserValidator.fullValidate(users.getCollection(), true);
 		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollection()))));
 	}
+
 
 }

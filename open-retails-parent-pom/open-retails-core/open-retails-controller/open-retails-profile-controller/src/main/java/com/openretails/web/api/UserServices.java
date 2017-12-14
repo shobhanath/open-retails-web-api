@@ -237,7 +237,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> partialUpdate(
 
 	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.update(users), HttpStatus.OK);
+		return new ResponseEntity<Collections<UserDTO>>(userManager.partialUpdate(users), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")

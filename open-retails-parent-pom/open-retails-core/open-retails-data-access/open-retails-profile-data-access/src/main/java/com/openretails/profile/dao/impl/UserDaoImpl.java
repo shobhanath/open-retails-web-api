@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.openretails.common.constant.DataAccessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsDataAccessException;
-import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.profile.dao.UserDao;
 import com.openretails.profile.model.Address;
 import com.openretails.profile.model.User;
@@ -190,8 +190,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Collection<User> update(Collection<User> users)
-			throws OpenRetailsValidationException, OpenRetailsDataAccessException {
+	public Collection<User> update(Collection<User> users) {
 		try {
 			return userRepository.save(users.stream().map(existingUser -> {
 				return updateUserMapping(existingUser);
@@ -204,28 +203,63 @@ public class UserDaoImpl implements UserDao {
 
 	private User updateUserMapping(User existingUser) {
 		final User dbUser = findById(existingUser.getIdentity(), null);
-		dbUser.setAge(existingUser.getAge());
+		if (existingUser.getAge() != null && !existingUser.getAge().equals(0)) {
+			dbUser.setAge(existingUser.getAge());
+		}
+		if (StringUtils.isNotBlank(existingUser.getComment())) {
 		dbUser.setComment(existingUser.getComment());
+		}
 		dbUser.setEmailVerified(existingUser.isEmailVerified());
-		dbUser.setFirstName(existingUser.getFirstName());
-		dbUser.setGender(existingUser.getGender());
-		dbUser.setLastName(existingUser.getLastName());
-		dbUser.setMiddleName(existingUser.getMiddleName());
+		if (StringUtils.isNotBlank(existingUser.getFirstName())) {
+			dbUser.setFirstName(existingUser.getFirstName());
+		}
+		if (existingUser.getGender() != null) {
+			dbUser.setGender(existingUser.getGender());
+		}
+		if (StringUtils.isNotBlank(existingUser.getLastName())) {
+			dbUser.setLastName(existingUser.getLastName());
+		}
+		if (StringUtils.isNotBlank(existingUser.getMiddleName())) {
+			dbUser.setMiddleName(existingUser.getMiddleName());
+		}
 		dbUser.setMobileVerified(existingUser.isMobileVerified());
-		dbUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
-		dbUser.setPrimaryEmailId(existingUser.getPrimaryEmailId());
-		dbUser.setPrimaryMobileNumber(existingUser.getPrimaryMobileNumber());
-		dbUser.setUserType(existingUser.getUserType());
-		dbUser.setUsername(existingUser.getUsername());
+		if (StringUtils.isNotBlank(existingUser.getPassword())) {
+			dbUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+		}
+		if (StringUtils.isNotBlank(existingUser.getPrimaryEmailId())) {
+			dbUser.setPrimaryEmailId(existingUser.getPrimaryEmailId());
+		}
+		if (existingUser.getPrimaryMobileNumber() != null && !existingUser.getPrimaryMobileNumber().equals(0)) {
+			dbUser.setPrimaryMobileNumber(existingUser.getPrimaryMobileNumber());
+		}
+		if (existingUser.getUserType() != null) {
+			dbUser.setUserType(existingUser.getUserType());
+		}
+		if (StringUtils.isNotBlank(existingUser.getUsername())) {
+			dbUser.setUsername(existingUser.getUsername());
+		}
 		dbUser.setObsolete(existingUser.isObsolete());
+		if (existingUser.getPermanentAddress() != null) {
 		final Address primaryAddress = dbUser.getPermanentAddress();
-		primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
-		primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
+			if (StringUtils.isNotBlank(existingUser.getPermanentAddress().getAddressFreeText())) {
+			primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
+		}
+			if (StringUtils.isNotBlank(existingUser.getPermanentAddress().getComment())) {
+			primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
+		}
 		primaryAddress.setObsolete(existingUser.getPermanentAddress().isObsolete());
-		final Address secondaryAddress = dbUser.getSecondaryAddress();
-		secondaryAddress.setAddressFreeText(existingUser.getSecondaryAddress().getAddressFreeText());
-		secondaryAddress.setComment(existingUser.getSecondaryAddress().getComment());
-		secondaryAddress.setObsolete(existingUser.getSecondaryAddress().isObsolete());
+		}
+
+		if (existingUser.getSecondaryAddress() != null) {
+			final Address secondaryAddress = dbUser.getSecondaryAddress();
+			if (StringUtils.isNotBlank(existingUser.getSecondaryAddress().getAddressFreeText())) {
+				secondaryAddress.setAddressFreeText(existingUser.getSecondaryAddress().getAddressFreeText());
+			}
+			if (StringUtils.isNotBlank(existingUser.getSecondaryAddress().getComment())) {
+				secondaryAddress.setComment(existingUser.getSecondaryAddress().getComment());
+			}
+			secondaryAddress.setObsolete(existingUser.getSecondaryAddress().isObsolete());
+		}
 		return dbUser;
 	}
 

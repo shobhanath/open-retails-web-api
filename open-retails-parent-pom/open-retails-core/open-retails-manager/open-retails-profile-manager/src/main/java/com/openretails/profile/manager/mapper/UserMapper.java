@@ -1,7 +1,7 @@
 package com.openretails.profile.manager.mapper;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +28,16 @@ public class UserMapper {
 		return user;
 	}
 
-	public Collection<User> mapUser(Collection<UserDTO> userDTO) {
-		final Collection<User> userCollection = new ArrayList<>();
-		for (final UserDTO u : userDTO) {
-			userCollection.add(map(u));
-		}
-		return userCollection;
+	public Collection<User> mapUser(Collection<UserDTO> usersDTO) {
+		return usersDTO.stream().map(user -> {
+			return map(user);
+		}).collect(Collectors.toList());
 	}
 
-	public Collection<UserDTO> mapUserDTO(Collection<User> user) {
-		final Collection<UserDTO> userDTOCollection = new ArrayList<>();
-		for(final User u : user){
-			userDTOCollection.add(map(u));
-		}
-		return userDTOCollection;
+	public Collection<UserDTO> mapUserDTO(Collection<User> users) {
+		return users.stream().map(user -> {
+			return map(user);
+		}).collect(Collectors.toList());
 	}
+
 }

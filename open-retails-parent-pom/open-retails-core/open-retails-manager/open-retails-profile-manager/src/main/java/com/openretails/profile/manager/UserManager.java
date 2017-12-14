@@ -31,6 +31,8 @@ public interface UserManager {
 
 	User getCurrentUser();
 
+	Collections<UserDTO> partialUpdate(Collections<UserDTO> users);
+
 	Collections<UserDTO> update(Collections<UserDTO> users);
 
 }

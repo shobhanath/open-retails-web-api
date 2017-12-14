@@ -68,8 +68,35 @@ public final class UserValidator {
 		return matcher.find();
 	}
 
-	public static void validateEmailAddress(Collection<String> emails){
-		if(emails==null || emails.isEmpty()){
+	public static void partialValidate(Collection<UserDTO> users) {
+		validateObjAndIdenity(users);
+		users.forEach(userDTO -> {
+			final Integer age = userDTO.getAge();
+			if (age != null && (age < 0 || age > 100)) {
+				throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_AGE);
+			}
+
+			final Long primaryMobileNumber = userDTO.getPrimaryMobileNumber();
+			if (primaryMobileNumber != null
+					&& (primaryMobileNumber < 0 || String.valueOf(primaryMobileNumber).length() != 10)) {
+				throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_MOBILE_NUMBER);
+			}
+
+			if (StringUtils.isNotBlank(userDTO.getPrimaryEmailId())) {
+				isEmailValid(userDTO.getPrimaryEmailId());
+			}
+			if (userDTO.getPermanentAddress() != null) {
+				validateId(userDTO.getPermanentAddress().getIdentity());
+			}
+			if (userDTO.getSecondaryAddress() != null) {
+				validateId(userDTO.getSecondaryAddress().getIdentity());
+			}
+
+		});
+	}
+
+	public static void validateEmailAddress(Collection<String> emails) {
+		if (emails == null || emails.isEmpty()) {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_EMIL_ADDRESS);
 		}
 		emails.forEach(primaryEmailId -> validateEmailAddress(primaryEmailId));
@@ -77,12 +104,11 @@ public final class UserValidator {
 
 	public static void validateEmailAddress(String primaryEmailId) {
 		if (StringUtils.isBlank(primaryEmailId) || !isEmailValid(primaryEmailId)) {
-
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_EMIL_ADDRESS);
 		}
 	}
 
-	public static void validateId(Collection<Long> ids){
+	public static void validateId(Collection<Long> ids) {
 		ids.forEach(id -> validateId(id));
 	}
 
@@ -103,4 +129,18 @@ public final class UserValidator {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_USER_OBJ);
 		}
 	}
+
+	public static <T> void validateObjAndIdenity(Collection<T> objects) {
+		for (final Object obj : objects) {
+			if (obj instanceof UserDTO) {
+				validateObj((UserDTO) obj);
+				validateId(((UserDTO) obj).getIdentity());
+			}
+			if (obj instanceof AddressDTO) {
+				validateObj((AddressDTO) obj);
+				validateId(((AddressDTO) obj).getIdentity());
+			}
+		}
+	}
+
 }
