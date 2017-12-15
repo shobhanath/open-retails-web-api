@@ -13,7 +13,7 @@
 		
 		<dependency>
 			<groupId>com.openretails</groupId>
-			<artifactId>open-retails-profile-manager</artifactId>
+			<artifactId>open-retails-stock-manager</artifactId>
 		</dependency>
 		
 		<dependency>
