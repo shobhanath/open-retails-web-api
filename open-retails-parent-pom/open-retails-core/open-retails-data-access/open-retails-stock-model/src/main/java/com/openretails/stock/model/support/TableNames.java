@@ -5,4 +5,5 @@ public interface TableNames {
 	String PROD_CATEGORIES = "PROD_CATEGORIES";
 	String STOCKS = "STOCKS";
 	String OFFERS = "OFFERS";
+	String OFFER_TYPES = "OFFER_TYPES";
 }
