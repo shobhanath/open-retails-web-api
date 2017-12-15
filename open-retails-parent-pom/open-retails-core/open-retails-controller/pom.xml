@@ -36,5 +36,6 @@
 	</dependencies>
 	<modules>
 		<module>open-retails-profile-controller</module>
+		<module>open-retails-stock-controller</module>
 	</modules>
 </project>

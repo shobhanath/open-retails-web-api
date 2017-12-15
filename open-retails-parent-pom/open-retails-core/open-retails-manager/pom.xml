@@ -11,5 +11,6 @@
 	
 	<modules>
 		<module>open-retails-profile-manager</module>
+		<module>open-retails-stock-manager</module>
 	</modules>
 </project>

@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.openretails</groupId>
+    <artifactId>open-retails-controller</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>open-retails-stock-controller</artifactId>
+  <properties>
+		<release.version>${project.version}</release.version>
+	</properties>
+	<dependencies>
+		
+		<dependency>
+			<groupId>com.openretails</groupId>
+			<artifactId>open-retails-profile-manager</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>io.springfox</groupId>
+							<artifactId>springfox-swagger-ui</artifactId>
+							<version>2.7.0</version>
+							<type>jar</type>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<sequential>
+									<echo>Replacing Images Task</echo>
+									<copy
+										todir="${project.build.directory}/classes/META-INF/resources/webjars/springfox-swagger-ui/images">
+										<fileset dir="${project.build.directory}/classes/images">
+											<include name="**" />
+										</fileset>
+									</copy>
+									<echo>Rename Title Task</echo>
+									<replace token="&quot;logo__title&quot;&gt;swagger"
+										value="&quot;logo__title&quot;&gt;Openretails" dir="${project.build.directory}/classes/META-INF/resources">
+										<include name="swagger-ui.html" />
+									</replace>
+									<echo>Disasbling swagger.io Link Task</echo>
+									<replace token="http://swagger.io" value="http://openretails.in"
+										dir="${project.build.directory}/classes/META-INF/resources">
+										<include name="swagger-ui.html" />
+									</replace>
+								</sequential>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

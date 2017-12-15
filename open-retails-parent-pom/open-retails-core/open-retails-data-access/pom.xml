@@ -45,5 +45,7 @@
 	<modules>
 		<module>open-retails-profile-model</module>
 		<module>open-retails-profile-data-access</module>
+		<module>open-retails-stock-data-access</module>
+		<module>open-retails-stock-model</module>
 	</modules>
 </project>

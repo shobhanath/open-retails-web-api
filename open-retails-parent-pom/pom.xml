@@ -101,10 +101,22 @@
 				<artifactId>open-retails-profile-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-stock-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.openretails</groupId>
 				<artifactId>open-retails-profile-data-access</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-stock-data-access</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -120,6 +132,12 @@
 				<artifactId>open-retails-profile-manager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-stock-manager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.openretails</groupId>
@@ -130,6 +148,12 @@
 			<dependency>
 				<groupId>com.openretails</groupId>
 				<artifactId>open-retails-profile-controller</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.openretails</groupId>
+				<artifactId>open-retails-stock-controller</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
