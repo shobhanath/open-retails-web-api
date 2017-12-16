@@ -3,9 +3,11 @@ package com.openretails.data;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @JsonRootName(value = "user")
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class UserDTO extends BaseDTO {
 
 	private static final long serialVersionUID = -3578663668010710336L;
