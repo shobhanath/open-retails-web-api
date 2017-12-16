@@ -54,14 +54,19 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
 	@Override
 	public Collection<ProductCategory> findAll(Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<Collection<ProductCategory>> optionalUsers = null == flag
+				? Optional.of(productCategoryRepo.findAll()) : productCategoryRepo.findByObsolete(flag);
+		optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_CATEGORY_NOT_FOUND));
+		return optionalUsers.get();
 	}
 
 	@Override
 	public Collection<ProductCategory> findById(Collection<Long> identity, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<Collection<ProductCategory>> optionalUsers = null == flag
+				? productCategoryRepo.findByIdentityIn(identity)
+				: productCategoryRepo.findByIdentityInAndObsolete(identity, flag);
+		optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_CATEGORY_NOT_FOUND));
+		return optionalUsers.get();
 	}
 
 	@Override
@@ -72,11 +77,11 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
 	@Override
 	public Collection<ProductCategory> findByName(Collection<String> names, Boolean flag) {
-
 		final Optional<Collection<ProductCategory>> optionalUsers = null == flag
 				? productCategoryRepo.findByNameIgnoreCaseIn(names)
 				: productCategoryRepo.findByNameIgnoreCaseInAndObsolete(names, flag);
-		optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.USERS_NOT_FOUND));
+		optionalUsers.orElseThrow(
+				() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_CATEGORY_BY_NAME_NOT_FOUND));
 		return optionalUsers.get();
 	}
 
