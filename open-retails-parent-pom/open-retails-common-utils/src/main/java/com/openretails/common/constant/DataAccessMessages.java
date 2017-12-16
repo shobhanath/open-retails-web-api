@@ -28,6 +28,9 @@ public final class DataAccessMessages {
 
 	/* ProductCategory */
 	public static final String VALIDATE_MIN_GST_PERCENTAGE = "Minimum gst should be zero";
+	public static final String FAILED_CREATE_PROD_CATEGORY = "Failed to create product category : ";
+	public static final String FAILED_TO_ENABLE_PROD_CATEGORY = "Failed to enable product category";
+	public static final String FAILED_TO_DISABLE_PROD_CATEGORY = "Failed to disable product category";
 
 	/* Stock */
 	public static final String VALIDATE_MIN_QTY = "Minimum quantity should be greater than zero";

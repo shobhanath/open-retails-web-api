@@ -29,7 +29,7 @@ public class UserManagerImpl implements UserManager {
 		try {
 			UserValidator.fullValidate(userDTOs.getCollection(), false);
 			return new Collections<>(
-					userMapper.mapUserDTO(userDao.create(userMapper.mapUser(userDTOs.getCollection()))));
+					userMapper.mapDTO(userDao.create(userMapper.mapEntity(userDTOs.getCollection()))));
 
 		} catch (final Exception e) {
 			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
@@ -39,17 +39,17 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public Collections<UserDTO> enableOrDisable(Collections<String> users, boolean isEnabled) {
 		UserValidator.validateEmailAddress(users.getCollection());
-		return new Collections<>(userMapper.mapUserDTO(userDao.enableOrDisable(users.getCollection(), isEnabled)));
+		return new Collections<>(userMapper.mapDTO(userDao.enableOrDisable(users.getCollection(), isEnabled)));
 	}
 
 	@Override
 	public Collections<UserDTO> findAll(Boolean flag) {
-		return new Collections<>(userMapper.mapUserDTO(userDao.findAll(flag)));
+		return new Collections<>(userMapper.mapDTO(userDao.findAll(flag)));
 	}
 
 	@Override
 	public Collections<UserDTO> findById(Collections<Long> identities, Boolean flag) {
-		return new Collections<>(userMapper.mapUserDTO(userDao.findById(identities.getCollection(), flag)));
+		return new Collections<>(userMapper.mapDTO(userDao.findById(identities.getCollection(), flag)));
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public Collections<UserDTO> findByUser(Collections<String> users, Boolean flag) {
 		UserValidator.validateEmailAddress(users.getCollection());
-		return new Collections<>(userMapper.mapUserDTO(userDao.findByUser(users.getCollection(), flag)));
+		return new Collections<>(userMapper.mapDTO(userDao.findByUser(users.getCollection(), flag)));
 	}
 
 	@Override
@@ -102,13 +102,13 @@ public class UserManagerImpl implements UserManager {
 	@Override
 	public Collections<UserDTO> partialUpdate(Collections<UserDTO> users) {
 		UserValidator.partialValidate(users.getCollection());
-		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollection()))));
+		return new Collections<>(userMapper.mapDTO(userDao.update(userMapper.mapEntity(users.getCollection()))));
 	}
 
 	@Override
 	public Collections<UserDTO> update(Collections<UserDTO> users) {
 		UserValidator.fullValidate(users.getCollection(), true);
-		return new Collections<>(userMapper.mapUserDTO(userDao.update(userMapper.mapUser(users.getCollection()))));
+		return new Collections<>(userMapper.mapDTO(userDao.update(userMapper.mapEntity(users.getCollection()))));
 	}
 
 

@@ -3,6 +3,7 @@ package com.openretails.profile.manager.mapper;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,20 +25,19 @@ public class UserMapper {
 	}
 
 	public User map(UserDTO userDTO) {
-		final User user = modelMapper.map(userDTO, User.class);
-		return user;
+		userDTO.setUsername(StringUtils.isNotBlank(userDTO.getUsername()) ? userDTO.getUsername().trim().toLowerCase()
+				: userDTO.getUsername());
+		userDTO.setPrimaryEmailId(StringUtils.isNotBlank(userDTO.getPrimaryEmailId())
+				? userDTO.getPrimaryEmailId().toLowerCase() : userDTO.getPrimaryEmailId());
+		return modelMapper.map(userDTO, User.class);
 	}
 
-	public Collection<User> mapUser(Collection<UserDTO> usersDTO) {
-		return usersDTO.stream().map(user -> {
-			return map(user);
-		}).collect(Collectors.toList());
+	public Collection<UserDTO> mapDTO(Collection<User> users) {
+		return users.stream().map(user -> map(user)).collect(Collectors.toList());
 	}
 
-	public Collection<UserDTO> mapUserDTO(Collection<User> users) {
-		return users.stream().map(user -> {
-			return map(user);
-		}).collect(Collectors.toList());
+	public Collection<User> mapEntity(Collection<UserDTO> usersDTO) {
+		return usersDTO.stream().map(user -> map(user)).collect(Collectors.toList());
 	}
 
 }
