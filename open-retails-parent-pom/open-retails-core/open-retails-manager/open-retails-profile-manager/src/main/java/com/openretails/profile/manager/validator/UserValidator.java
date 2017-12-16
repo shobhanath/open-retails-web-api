@@ -143,4 +143,7 @@ public final class UserValidator {
 		}
 	}
 
+	private UserValidator() {
+	}
+
 }

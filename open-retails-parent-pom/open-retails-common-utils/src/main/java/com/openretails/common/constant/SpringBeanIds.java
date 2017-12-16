@@ -1,14 +1,20 @@
 package com.openretails.common.constant;
 
-public interface SpringBeanIds {
+public final class SpringBeanIds {
 	/* Repository Id */
-	String USER_DAO = "userDao";
+	public static final String USER_DAO = "userDao";
+	public static final String STOCK_DAO = "stockDao";
 
 	/* Service Id */
-	String CUSTOM_USER_DETAILS_MANAGER = "customUserDetailsManager";
-	String USER_MANAGER = "userManager";
+	public static final String CUSTOM_USER_DETAILS_MANAGER = "customUserDetailsManager";
+	public static final String USER_MANAGER = "userManager";
+	public static final String STOCK_MANAGER = "stockManager";
 
 	/* Component Id */
-	String USER_MAPPER = "userMapper";
-	String DAO_CONFIGURATION = "doaConfiguration";
+	public static final String USER_MAPPER = "userMapper";
+	public static final String STOCK_MAPPER = "stockMapper";
+	public static final String DAO_CONFIGURATION = "doaConfiguration";
+
+	private SpringBeanIds() {
+	}
 }
