@@ -1,4 +1,4 @@
-/*package com.openretails.stock.web.api;
+package com.openretails.stock.web.api;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<ProductCategoryDTO>> create(
 
 	@ApiParam(value = "productCategories", required = true) @RequestBody Collections<ProductCategoryDTO> productCategories) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.create(productCategories), HttpStatus.OK);
+		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.create(productCategories),
+				HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${ProductCategoryServices.enableOrDisable.value}", notes = "${ProductCategoryServices.enableOrDisable.note}")
@@ -243,4 +244,3 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.update(productCategories), HttpStatus.OK);
 	}
 }
-*/
