@@ -33,6 +33,8 @@ public final class DataAccessMessages {
 	public static final String FAILED_TO_DISABLE_PROD_CATEGORY = "Failed to disable product category";
 	public static final String PROD_CATEGORY_NOT_FOUND = "Product category not found";
 	public static final String PROD_CATEGORY_BY_NAME_NOT_FOUND = "Product category not found with the given details";
+	public static final String ID_BY_NAME_NOT_FOUND = "Identity not found with the given details";
+	public static final String NAME_BY_ID_NOT_FOUND = "Name not found with the given details";
 	/* Stock */
 	public static final String VALIDATE_MIN_QTY = "Minimum quantity should be greater than zero";
 	public static final String VALIDATE_MIN_BUY_PRICE = "Minimum buying price should be greater than zero";

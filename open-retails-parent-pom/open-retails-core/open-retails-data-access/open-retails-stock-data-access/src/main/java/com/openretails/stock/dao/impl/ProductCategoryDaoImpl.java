@@ -30,8 +30,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			return productCategoryRepo.save(productCategories);
 		} catch (final Exception exception) {
 			throw new OpenRetailsDataAccessException(
-					DataAccessMessages.FAILED_CREATE_PROD_CATEGORY + exception.getMessage(),
-					exception.getCause());
+					DataAccessMessages.FAILED_CREATE_PROD_CATEGORY + exception.getMessage(), exception.getCause());
 		}
 	}
 
@@ -71,8 +70,10 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
 	@Override
 	public ProductCategory findById(Long identity, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<ProductCategory> optionalUsers = null == flag ? productCategoryRepo.findByIdentity(identity)
+				: productCategoryRepo.findByIdentityAndObsolete(identity, flag);
+		optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_CATEGORY_NOT_FOUND));
+		return optionalUsers.get();
 	}
 
 	@Override
@@ -87,38 +88,56 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
 	@Override
 	public ProductCategory findByName(String name, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<ProductCategory> optionalUsers = null == flag ? productCategoryRepo.findByNameIgnoreCase(name)
+				: productCategoryRepo.findByNameIgnoreCaseAndObsolete(name, flag);
+		optionalUsers.orElseThrow(
+				() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_CATEGORY_BY_NAME_NOT_FOUND));
+		return optionalUsers.get();
 	}
 
 	@Override
 	public Collection<Long> findIdByName(Collection<String> names, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<Collection<Long>> optionalUserId = null == flag
+				? productCategoryRepo.getByNameIgnoreCaseIn(names)
+				: productCategoryRepo.getByNameIgnoreCaseInAndObsolete(names, flag);
+		optionalUserId.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.ID_BY_NAME_NOT_FOUND));
+		return optionalUserId.get();
 	}
 
 	@Override
 	public Long findIdByName(String name, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<Long> optionalUserId = null == flag ? productCategoryRepo.getByNameIgnoreCase(name)
+				: productCategoryRepo.getByNameIgnoreCaseAndObsolete(name, flag);
+		optionalUserId.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.ID_BY_NAME_NOT_FOUND));
+		return optionalUserId.get();
 	}
 
 	@Override
-	public Collection<String> findNameById(Collection<Long> identity, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<String> findNameById(Collection<Long> identities, Boolean flag) {
+		final Optional<Collection<String>> optionalUserId = null == flag ? productCategoryRepo.getNameByIdIn(identities)
+				: productCategoryRepo.getNameByIdInAndObsolete(identities, flag);
+		optionalUserId.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.NAME_BY_ID_NOT_FOUND));
+		return optionalUserId.get();
 	}
 
 	@Override
 	public String findNameById(Long identity, Boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<String> optionalUserId = null == flag ? productCategoryRepo.getNameById(identity)
+				: productCategoryRepo.getNameByIdAndObsolete(identity, flag);
+		optionalUserId.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.NAME_BY_ID_NOT_FOUND));
+		return optionalUserId.get();
 	}
 
 	@Override
 	public Collection<ProductCategory> update(Collection<ProductCategory> productCategories) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			productCategories.forEach(productCategory -> findById(productCategory.getIdentity(), null));
+			return productCategoryRepo.save(productCategories);
+		} catch (final Exception exception) {
+			throw new OpenRetailsDataAccessException(DataAccessMessages.FAILED_UPDATE_USERS + exception.getMessage(),
+					exception.getCause());
+		}
 	}
+
 
 }
