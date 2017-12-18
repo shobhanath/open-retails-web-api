@@ -251,6 +251,7 @@
 				<version>${validation-api.version}</version>
 			</dependency>
 
+
 			<!-- Others utility dependency end -->
 		</dependencies>
 	</dependencyManagement>
