@@ -98,16 +98,16 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
 			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
 
-	@GetMapping(value = "/product-categories/{user:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/product-categories/{name:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<ProductCategoryDTO> findByProductCategory(
 			@ApiParam(value = "${ProductCategoryServices.findByProductCategory.param1}", required = false) @RequestParam(value = "active", required = false, defaultValue = "") String active,
-			@PathVariable("productCategoryuctCategory") @ApiParam(value = "productCategory", required = true) String productCategory) {
+			@PathVariable("name") @ApiParam(value = "productCategory", required = true) String name) {
 		final Boolean isActive = active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active);
-		final boolean isNumberic = StringUtils.isNumeric(productCategory);
+		final boolean isNumberic = StringUtils.isNumeric(name);
 		return new ResponseEntity<ProductCategoryDTO>(
-				isNumberic ? productCategoryManager.findById(Long.valueOf(productCategory), isActive)
-						: productCategoryManager.findByName(productCategory, isActive),
+				isNumberic ? productCategoryManager.findById(Long.valueOf(name), isActive)
+						: productCategoryManager.findByName(name, isActive),
 				HttpStatus.OK);
 	}
 
