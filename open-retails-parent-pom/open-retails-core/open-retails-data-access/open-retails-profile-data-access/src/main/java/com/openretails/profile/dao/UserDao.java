@@ -20,6 +20,8 @@ public interface UserDao {
 
 	User findByUser(String user, Boolean flag);
 
+	User findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(String username,String emailId,String password);
+
 	Collection<Long> findIdByUser(Collection<String> user, Boolean flag);
 
 	Long findIdByUser(String user, Boolean flag);

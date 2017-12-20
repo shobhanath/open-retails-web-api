@@ -13,12 +13,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableTransactionManagement
 @EnableJpaAuditing
 @EnableSwagger2
-public class SpringBootProfileApplication {
+public class ProfileApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(SpringBootProfileApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(ProfileApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootProfileApplication.class);
+		SpringApplication.run(ProfileApplication.class);
 		log.debug("SpringBootProfileApplication is started");
 	}
 

@@ -15,6 +15,7 @@ public final class DataAccessMessages {
 	public static final String FAILED_TO_FETCH_ALL_USERS = "Failed to fetch all users";
 	public static final String FAILED_TO_FETCH_USERS_BY_ID = "Failed to fetch user by id";
 	public static final String FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL = "Failed to fetch users by either username or primary email id";
+	public static final String FAILED_TO_FETCH_BY_USERNAME_AND_PASSWORD = "User not found with the given username and password, incorrect username or password";
 
 	/* OfferType */
 	public static final String VALIDATE_MIN_DISCOUNT_PERCENTAGE = "Minimum discount should be zero";

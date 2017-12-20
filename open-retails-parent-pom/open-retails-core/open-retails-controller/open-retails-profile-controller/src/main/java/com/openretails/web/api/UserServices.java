@@ -20,6 +20,7 @@ import com.openretails.common.exception.format.ExceptionMessage;
 import com.openretails.data.Collections;
 import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
+import com.openretails.data.UsernameAndPasswordDTO;
 import com.openretails.profile.manager.UserManager;
 import com.openretails.web.exception.handler.GenericExceptionHandler;
 
@@ -51,7 +52,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> create(
 
 	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.create(users), HttpStatus.OK);
+		return new ResponseEntity<>(userManager.create(users), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.enableOrDisable.value}", notes = "${UserServices.enableOrDisable.note}")
@@ -68,7 +69,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> enableOrDisable(
 			@ApiParam(value = "users", required = true) @RequestBody Collections<String> users,
 			@ApiParam(value = "enable", required = true) @PathVariable("enable") boolean enable) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.enableOrDisable(users, enable), HttpStatus.OK);
+		return new ResponseEntity<>(userManager.enableOrDisable(users, enable), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.findAll.value}", notes = "${UserServices.findAll.note}")
@@ -85,7 +86,7 @@ public class UserServices extends GenericExceptionHandler {
 
 	public ResponseEntity<Collections<UserDTO>> findAll(
 			@ApiParam(value = "active", required = false) @RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<UserDTO>>(
+		return new ResponseEntity<>(
 				userManager.findAll(active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)),
 				HttpStatus.OK);
 	}
@@ -105,7 +106,7 @@ public class UserServices extends GenericExceptionHandler {
 			@PathVariable("user") @ApiParam(value = "user", required = true) String user) {
 		final Boolean isActive = active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active);
 		final boolean isNumberic = StringUtils.isNumeric(user);
-		return new ResponseEntity<UserDTO>(isNumberic ? userManager.findById(Long.valueOf(user), isActive)
+		return new ResponseEntity<>(isNumberic ? userManager.findById(Long.valueOf(user), isActive)
 				: userManager.findByUser(user, isActive),
 				HttpStatus.OK);
 	}
@@ -125,7 +126,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<Long>> findIdentitiesByUsernameOrPrimayEmailAddress(
 			@ApiParam(value = "users", required = true) @RequestBody Collections<String> users,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<Long>>(userManager.findIdByUser(users,
+		return new ResponseEntity<>(userManager.findIdByUser(users,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -143,7 +144,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Single<Long>> findIdentityByUsernameOrPrimayEmailAddress(
 			@PathVariable("user") @ApiParam(value = "user", required = true) String user,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Single<Long>>(userManager.findIdByUser(user,
+		return new ResponseEntity<>(userManager.findIdByUser(user,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -162,7 +163,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<String>> findUsernameOrPrimaryEmailByIdentity(
 			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<String>>(userManager.findUsernameById(identities,
+		return new ResponseEntity<>(userManager.findUsernameById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -180,7 +181,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Single<String>> findUsernameOrPrimayEmailAddressById(
 			@PathVariable("user") @ApiParam(value = "user", required = true) long user,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Single<String>>(userManager.findUsernameById(user,
+		return new ResponseEntity<>(userManager.findUsernameById(user,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -199,7 +200,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> findUsersById(
 			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.findById(identities,
+		return new ResponseEntity<>(userManager.findById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -218,7 +219,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> findUsersByUsernameOrEmail(
 			@ApiParam(value = "users", required = true) @RequestBody Collections<String> users,
 			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.findByUser(users,
+		return new ResponseEntity<>(userManager.findByUser(users,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -237,7 +238,7 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> partialUpdate(
 
 	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.partialUpdate(users), HttpStatus.OK);
+		return new ResponseEntity<>(userManager.partialUpdate(users), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")
@@ -255,7 +256,27 @@ public class UserServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<UserDTO>> update(
 
 	@ApiParam(value = "users", required = true) @RequestBody Collections<UserDTO> users) {
-		return new ResponseEntity<Collections<UserDTO>>(userManager.update(users), HttpStatus.OK);
+		return new ResponseEntity<>(userManager.update(users), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "${UserServices.validate.value}", notes = "${UserServices.validate.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/users/authenticate", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<UserDTO> validate(
+
+	@ApiParam(value = "credential", required = true) @RequestBody Single<UsernameAndPasswordDTO> credential) {
+		return new ResponseEntity<>(
+				userManager.validate(credential.getData().getUsername(), credential.getData().getPassword()),
+				HttpStatus.OK);
 	}
 
 

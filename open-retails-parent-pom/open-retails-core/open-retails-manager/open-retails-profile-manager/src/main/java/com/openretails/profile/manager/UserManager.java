@@ -35,4 +35,6 @@ public interface UserManager {
 
 	Collections<UserDTO> update(Collections<UserDTO> users);
 
+	UserDTO validate(String username, String password);
+
 }

@@ -1,6 +1,7 @@
 package com.openretails.common.threadlocal;
 
 public class ThreadLocalData {
+
 	private Long loggedInUserId = null;
 
 	public Long getLoggedInUserId() {
@@ -10,4 +11,5 @@ public class ThreadLocalData {
 	public void setLoggedInUserId(Long loggedInUserId) {
 		this.loggedInUserId = loggedInUserId;
 	}
+
 }

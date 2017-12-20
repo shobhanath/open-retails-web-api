@@ -1,10 +1,13 @@
 package com.openretails.profile.manager.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.openretails.common.constant.BusinessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsBusinessException;
+import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.data.Collections;
 import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
@@ -23,13 +26,11 @@ public class UserManagerImpl implements UserManager {
 	@Autowired
 	private UserMapper userMapper;
 
-
 	@Override
 	public Collections<UserDTO> create(Collections<UserDTO> userDTOs) {
 		try {
 			UserValidator.fullValidate(userDTOs.getCollection(), false);
-			return new Collections<>(
-					userMapper.mapDTO(userDao.create(userMapper.mapEntity(userDTOs.getCollection()))));
+			return new Collections<>(userMapper.mapDTO(userDao.create(userMapper.mapEntity(userDTOs.getCollection()))));
 
 		} catch (final Exception e) {
 			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
@@ -111,5 +112,13 @@ public class UserManagerImpl implements UserManager {
 		return new Collections<>(userMapper.mapDTO(userDao.update(userMapper.mapEntity(users.getCollection()))));
 	}
 
+	@Override
+	public UserDTO validate(String username, String password) {
+		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_USER_PASSWORD);
+		}
+		return userMapper
+				.map(userDao.findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(username, username, password));
+	}
 
 }

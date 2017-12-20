@@ -2,7 +2,6 @@ package com.openretails.profile.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ public class CustomUserDetailsManagerImpl implements CustomUserDetailsManager {
 	private UserDao userDao;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		return new CustomUserDetails(userDao.findByUser(username, true));
 	}
 

@@ -43,6 +43,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUsernameOrPrimaryEmailIdAndObsolete(boolean flag, String name,
 			String primaryEmail);
 
+	Optional<User> findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(String username,String emailId,String password);
+
 	@Query("Select u from User u")
 	Optional<Collection<User>> getAll();
 

@@ -136,16 +136,25 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 			user = user.trim().toLowerCase();
-			final Optional<User> optionalUsers = null == flag
-					? userRepository.findByUsernameOrPrimaryEmailId(user, user)
+			final Optional<User> optionalUser = null == flag ? userRepository.findByUsernameOrPrimaryEmailId(user, user)
 					: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, user, user);
-			optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(
+			optionalUser.orElseThrow(() -> new OpenRetailsDataAccessException(
 					DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
-			return optionalUsers.get();
+			return optionalUser.get();
 		} catch (final Exception exception) {
 			throw new OpenRetailsDataAccessException(exception.getMessage(), exception.getCause());
 		}
 
+	}
+
+	@Override
+	public User findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(String username, String emailId,
+			String password) {
+		final Optional<User> optionalUser = userRepository.findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(
+				username, emailId, passwordEncoder.encode(password));
+		optionalUser.orElseThrow(
+				() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_BY_USERNAME_AND_PASSWORD));
+		return optionalUser.get();
 	}
 
 	@Override
@@ -207,7 +216,7 @@ public class UserDaoImpl implements UserDao {
 			dbUser.setAge(existingUser.getAge());
 		}
 		if (StringUtils.isNotBlank(existingUser.getComment())) {
-		dbUser.setComment(existingUser.getComment());
+			dbUser.setComment(existingUser.getComment());
 		}
 		dbUser.setEmailVerified(existingUser.isEmailVerified());
 		if (StringUtils.isNotBlank(existingUser.getFirstName())) {
@@ -240,14 +249,14 @@ public class UserDaoImpl implements UserDao {
 		}
 		dbUser.setObsolete(existingUser.isObsolete());
 		if (existingUser.getPermanentAddress() != null) {
-		final Address primaryAddress = dbUser.getPermanentAddress();
+			final Address primaryAddress = dbUser.getPermanentAddress();
 			if (StringUtils.isNotBlank(existingUser.getPermanentAddress().getAddressFreeText())) {
-			primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
-		}
+				primaryAddress.setAddressFreeText(existingUser.getPermanentAddress().getAddressFreeText());
+			}
 			if (StringUtils.isNotBlank(existingUser.getPermanentAddress().getComment())) {
-			primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
-		}
-		primaryAddress.setObsolete(existingUser.getPermanentAddress().isObsolete());
+				primaryAddress.setComment(existingUser.getPermanentAddress().getComment());
+			}
+			primaryAddress.setObsolete(existingUser.getPermanentAddress().isObsolete());
 		}
 
 		if (existingUser.getSecondaryAddress() != null) {

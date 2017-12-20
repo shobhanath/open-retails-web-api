@@ -15,12 +15,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaAuditing
 @EnableSwagger2
 @EnableCaching
-public class Startup {
+public class StockApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(Startup.class);
+	private static final Logger log = LoggerFactory.getLogger(StockApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(Startup.class);
+		SpringApplication.run(StockApplication.class);
 		log.debug("Stock spring boot app is started");
 	}
 
