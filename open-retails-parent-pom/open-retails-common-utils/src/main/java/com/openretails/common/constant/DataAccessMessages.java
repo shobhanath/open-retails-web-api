@@ -31,11 +31,22 @@ public final class DataAccessMessages {
 	public static final String FAILED_CREATE_PROD_CATEGORY = "Failed to create product category : ";
 	public static final String FAILED_TO_ENABLE_PROD_CATEGORY = "Failed to enable product category";
 	public static final String FAILED_TO_DISABLE_PROD_CATEGORY = "Failed to disable product category";
+	public static final String FAILED_UPDATE_PROD_CATEGORIES = "Failed to update product categories : ";
 	public static final String PROD_CATEGORY_NOT_FOUND = "Product category not found";
 	public static final String PROD_CATEGORY_BY_NAME_NOT_FOUND = "Product category not found with the given details";
 	public static final String ID_BY_NAME_NOT_FOUND = "Identity not found with the given details";
 	public static final String NAME_BY_ID_NOT_FOUND = "Name not found with the given details";
 	public static final String SEARCH_BY_NAME_OR_ID_NOT_FOUND = "Product category not found by name or identity";
+
+	/* Product */
+	public static final String FAILED_CREATE_PROD = "Failed to create product : ";
+	public static final String FAILED_TO_ENABLE_PROD = "Failed to enable product";
+	public static final String FAILED_TO_DISABLE_PROD = "Failed to disable product";
+	public static final String PROD_NOT_FOUND = "Product not found";
+	public static final String PROD_BY_NAME_NOT_FOUND = "Product not found with the given details";
+	public static final String PROD_SEARCH_BY_NAME_OR_ID_NOT_FOUND = "Product not found by name or identity";
+	public static final String FAILED_UPDATE_PRODUCTS = "Failed to update products : ";
+
 	/* Stock */
 	public static final String VALIDATE_MIN_QTY = "Minimum quantity should be greater than zero";
 	public static final String VALIDATE_MIN_BUY_PRICE = "Minimum buying price should be greater than zero";

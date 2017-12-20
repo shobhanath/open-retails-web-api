@@ -49,7 +49,7 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<ProductCategoryDTO>> create(
 
 	@ApiParam(value = "productCategories", required = true) @RequestBody Collections<ProductCategoryDTO> productCategories) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.create(productCategories),
+		return new ResponseEntity<>(productCategoryManager.create(productCategories),
 				HttpStatus.OK);
 	}
 
