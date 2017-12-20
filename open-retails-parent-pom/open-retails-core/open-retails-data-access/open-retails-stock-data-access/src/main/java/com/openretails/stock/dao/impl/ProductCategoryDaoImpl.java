@@ -98,6 +98,20 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 	}
 
 	@Override
+	public Collection<ProductCategory> findByNameContainingOrIdentityObseleteTrue(String name, Long identity) {
+		try {
+			final Optional<Collection<ProductCategory>> optionalProdCategory = productCategoryRepo
+					.findByNameIgnoreCaseContainingOrIdentityAndObsoleteTrue(name, identity);
+			optionalProdCategory.orElseThrow(
+					() -> new OpenRetailsDataAccessException(DataAccessMessages.SEARCH_BY_NAME_OR_ID_NOT_FOUND));
+			return optionalProdCategory.get();
+
+		} catch (final Exception exception) {
+			throw new OpenRetailsDataAccessException(exception);
+		}
+	}
+
+	@Override
 	public Collection<Long> findIdByName(Collection<String> names, Boolean flag) {
 		final Optional<Collection<Long>> optionalUserId = null == flag
 				? productCategoryRepo.getByNameIgnoreCaseIn(names)
@@ -140,6 +154,5 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 					exception.getCause());
 		}
 	}
-
 
 }

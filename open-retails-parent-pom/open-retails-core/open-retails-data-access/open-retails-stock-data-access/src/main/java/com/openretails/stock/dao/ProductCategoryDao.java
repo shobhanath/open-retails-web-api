@@ -20,6 +20,8 @@ public interface ProductCategoryDao {
 
 	ProductCategory findByName(String name, Boolean flag);
 
+	Collection<ProductCategory> findByNameContainingOrIdentityObseleteTrue(String name, Long identity);
+
 	Collection<Long> findIdByName(Collection<String> names, Boolean flag);
 
 	Long findIdByName(String name, Boolean flag);

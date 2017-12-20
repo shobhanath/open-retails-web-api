@@ -20,6 +20,8 @@ public interface ProductCategoryManager {
 
 	ProductCategoryDTO findByName(String name, Boolean flag);
 
+	Collections<ProductCategoryDTO> findByNameContainingOrIdentityObseleteTrue(String name, Long identity);
+
 	Collections<Long> findIdByName(Collections<String> names, Boolean flag);
 
 	Single<Long> findIdByName(String name, Boolean flag);

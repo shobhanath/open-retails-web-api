@@ -35,6 +35,7 @@ public final class DataAccessMessages {
 	public static final String PROD_CATEGORY_BY_NAME_NOT_FOUND = "Product category not found with the given details";
 	public static final String ID_BY_NAME_NOT_FOUND = "Identity not found with the given details";
 	public static final String NAME_BY_ID_NOT_FOUND = "Name not found with the given details";
+	public static final String SEARCH_BY_NAME_OR_ID_NOT_FOUND = "Product category not found by name or identity";
 	/* Stock */
 	public static final String VALIDATE_MIN_QTY = "Minimum quantity should be greater than zero";
 	public static final String VALIDATE_MIN_BUY_PRICE = "Minimum buying price should be greater than zero";

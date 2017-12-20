@@ -53,6 +53,29 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 				HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "${ProductCategoryServices.doSearch.value}", notes = "${ProductCategoryServices.doSearch.note}")
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@GetMapping(value = "/product-categories/search", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<ProductCategoryDTO>> doSearch(
+			@ApiParam(value = "key", required = false) @RequestParam(value = "key", required = false, defaultValue = ApplicationConstants.EMPTY) String key) {
+
+		if (key.equalsIgnoreCase(ApplicationConstants.EMPTY)) {
+			return new ResponseEntity<>(productCategoryManager.findAll(null),
+					HttpStatus.OK);
+		}
+		return new ResponseEntity<>(StringUtils.isNumeric(key)
+				? productCategoryManager.findByNameContainingOrIdentityObseleteTrue(key,
+						Long.valueOf(key))
+				: productCategoryManager.findByNameContainingOrIdentityObseleteTrue(key, null), HttpStatus.OK);
+	}
+
 	@ApiOperation(value = "${ProductCategoryServices.enableOrDisable.value}", notes = "${ProductCategoryServices.enableOrDisable.note}")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
 			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
@@ -67,7 +90,7 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<ProductCategoryDTO>> enableOrDisable(
 			@ApiParam(value = "productCategories", required = true) @RequestBody Collections<String> productCategories,
 			@ApiParam(value = "enable", required = true) @PathVariable("enable") boolean enable) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(
+		return new ResponseEntity<>(
 				productCategoryManager.enableOrDisable(productCategories, enable), HttpStatus.OK);
 	}
 
@@ -84,8 +107,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 
 	public ResponseEntity<Collections<ProductCategoryDTO>> findAll(
-			@ApiParam(value = "active", required = false) @RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager
+			@ApiParam(value = "active", required = false) @RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager
 				.findAll(active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)),
 				HttpStatus.OK);
 	}
@@ -101,11 +124,11 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@GetMapping(value = "/product-categories/{name:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<ProductCategoryDTO> findByProductCategory(
-			@ApiParam(value = "${ProductCategoryServices.findByProductCategory.param1}", required = false) @RequestParam(value = "active", required = false, defaultValue = "") String active,
+			@ApiParam(value = "${ProductCategoryServices.findByProductCategory.param1}", required = false) @RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active,
 			@PathVariable("name") @ApiParam(value = "productCategory", required = true) String name) {
 		final Boolean isActive = active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active);
 		final boolean isNumberic = StringUtils.isNumeric(name);
-		return new ResponseEntity<ProductCategoryDTO>(
+		return new ResponseEntity<>(
 				isNumberic ? productCategoryManager.findById(Long.valueOf(name), isActive)
 						: productCategoryManager.findByName(name, isActive),
 				HttpStatus.OK);
@@ -126,8 +149,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<Long>> findIdentitiesByProductCategory(
 			@ApiParam(value = "productCategories", required = true) @RequestBody Collections<String> productCategories,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<Long>>(productCategoryManager.findIdByName(productCategories,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findIdByName(productCategories,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -144,8 +167,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Single<Long>> findIdentityByProductCategory(
 			@PathVariable("name") @ApiParam(value = "name", required = true) String name,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Single<Long>>(productCategoryManager.findIdByName(name,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findIdByName(name,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -164,8 +187,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<ProductCategoryDTO>> findProductCategoriesByName(
 			@ApiParam(value = "productCategories", required = true) @RequestBody Collections<String> productCategories,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.findByName(productCategories,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findByName(productCategories,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -183,8 +206,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<ProductCategoryDTO>> findProductCategoryiesById(
 			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.findById(identities,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -201,8 +224,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Single<String>> findProductCategoryNameById(
 			@PathVariable("identity") @ApiParam(value = "identity", required = true) long identity,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Single<String>>(productCategoryManager.findNameById(identity,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findNameById(identity,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -221,8 +244,8 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<String>> findProductCategoryNamesByIdentity(
 			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
-			@RequestParam(value = "active", required = false, defaultValue = "") String active) {
-		return new ResponseEntity<Collections<String>>(productCategoryManager.findNameById(identities,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+		return new ResponseEntity<>(productCategoryManager.findNameById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
@@ -241,6 +264,6 @@ public class ProductCategoryServices extends GenericExceptionHandler {
 	public ResponseEntity<Collections<ProductCategoryDTO>> update(
 
 	@ApiParam(value = "productCategories", required = true) @RequestBody Collections<ProductCategoryDTO> productCategories) {
-		return new ResponseEntity<Collections<ProductCategoryDTO>>(productCategoryManager.update(productCategories), HttpStatus.OK);
+		return new ResponseEntity<>(productCategoryManager.update(productCategories), HttpStatus.OK);
 	}
 }

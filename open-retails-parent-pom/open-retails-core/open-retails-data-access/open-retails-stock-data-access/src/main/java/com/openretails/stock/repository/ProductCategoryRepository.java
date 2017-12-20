@@ -15,6 +15,8 @@ public interface ProductCategoryRepository extends BaseJpaRepository<ProductCate
 
 	Optional<ProductCategory> findByNameIgnoreCaseAndObsolete(String name, boolean active);
 
+	Optional<Collection<ProductCategory>> findByNameIgnoreCaseContainingOrIdentityAndObsoleteTrue(String names, Long identity);
+
 	Optional<Collection<ProductCategory>> findByNameIgnoreCaseIn(Collection<String> names);
 
 	Optional<Collection<ProductCategory>> findByNameIgnoreCaseInAndObsolete(Collection<String> names, boolean active);

@@ -92,6 +92,13 @@ public class ProductCategoryManagerImpl implements ProductCategoryManager {
 	}
 
 	@Override
+	public Collections<ProductCategoryDTO> findByNameContainingOrIdentityObseleteTrue(String name,
+			Long identity) {
+		return new Collections<>(
+				productCategoryMapper.mapDTO(productCategoryDao.findByNameContainingOrIdentityObseleteTrue(name, identity)));
+	}
+
+	@Override
 	public Collections<Long> findIdByName(@NonNull Collections<String> names, Boolean flag) {
 		try {
 			return new Collections<>(productCategoryDao.findIdByName(names.getCollection(), flag));
