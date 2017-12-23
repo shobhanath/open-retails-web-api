@@ -52,6 +52,11 @@ public final class DataAccessMessages {
 	public static final String VALIDATE_MIN_QTY = "Minimum quantity should be greater than zero";
 	public static final String VALIDATE_MIN_BUY_PRICE = "Minimum buying price should be greater than zero";
 	public static final String VALIDATE_MIN_MRP = "Minimum mrp should be greater than zero";
+	public static final String FAILED_CREATE_STOCK = "Failed to create stock : ";
+	public static final String FAILED_TO_ENABLE_STOCK = "Failed to enable stock";
+	public static final String FAILED_TO_DISABLE_STOCK = "Failed to disable stock";
+	public static final String STOCK_NOT_FOUND = "Stock not found";
+	public static final String FAILED_UPDATE_STOCKS = "Failed to update stocks : ";
 
 	private DataAccessMessages() {
 	}

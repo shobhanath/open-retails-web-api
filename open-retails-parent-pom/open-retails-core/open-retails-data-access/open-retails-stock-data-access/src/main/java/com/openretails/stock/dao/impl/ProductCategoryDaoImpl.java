@@ -140,6 +140,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		return optionalUserId.get();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Override
 	public Collection<ProductCategory> update(Collection<ProductCategory> productCategories) {
 		try {

@@ -133,6 +133,7 @@ public class ProductDaoImpl implements ProductDao {
 		return optionalUserId.get();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Override
 	public Collection<Product> update(Collection<Product> products) {
 		try {
