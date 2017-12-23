@@ -1,10 +1,7 @@
 package com.openretails.stock.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -33,8 +30,5 @@ public class ProductCategory extends BaseEntity {
 	@Min(value = 0, message = DataAccessMessages.VALIDATE_MIN_GST_PERCENTAGE)
 	@Column
 	private double gst;
-	
-	@OneToMany(mappedBy="productCategory")
-	private Set<Product> product;
 
 }

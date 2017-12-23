@@ -1,12 +1,9 @@
 package com.openretails.stock.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,8 +36,5 @@ public class Product extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name="PROD_CATEGORY_ID", nullable=false)
 	private ProductCategory productCategory;
-	
-	@OneToMany(mappedBy="product")
-	private Set<Stock> stock;
 
 }

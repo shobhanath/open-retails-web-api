@@ -94,7 +94,7 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public Collection<Product> findByNameContainingOrIdentityObseleteTrue(String name, Long identity) {
 			final Optional<Collection<Product>> optionalProdCategory = productRepo
-					.findByNameIgnoreCaseContainingOrIdentityAndObsoleteTrue(name, identity);
+				.findByObsoleteTrueAndNameIgnoreCaseContainingOrIdentity(name.trim().toLowerCase(), identity);
 			optionalProdCategory.orElseThrow(
 					() -> new OpenRetailsDataAccessException(DataAccessMessages.PROD_SEARCH_BY_NAME_OR_ID_NOT_FOUND));
 			return optionalProdCategory.get();

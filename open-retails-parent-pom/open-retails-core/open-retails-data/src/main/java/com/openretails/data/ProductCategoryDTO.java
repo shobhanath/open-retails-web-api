@@ -1,7 +1,5 @@
 package com.openretails.data;
 
-import java.util.Set;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +12,5 @@ public class ProductCategoryDTO extends BaseDTO {
 	private String name;
 
 	private double gst;
-	
-	private Set<ProductDTO> product;
 
 }
