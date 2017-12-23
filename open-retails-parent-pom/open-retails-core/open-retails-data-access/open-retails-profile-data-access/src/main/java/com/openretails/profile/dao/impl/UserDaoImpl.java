@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.openretails.common.constant.DataAccessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsDataAccessException;
+import com.openretails.common.utils.Base64;
 import com.openretails.profile.dao.UserDao;
+import com.openretails.profile.dao.properties.PropertyResourceConfig;
 import com.openretails.profile.model.Address;
 import com.openretails.profile.model.User;
 import com.openretails.profile.repository.UserRepository;
@@ -27,7 +28,7 @@ public class UserDaoImpl implements UserDao {
 	private UserRepository userRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private PropertyResourceConfig propertyResource;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -65,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 
 	private Collection<User> encodePassword(Collection<User> users) {
 		final Collection<User> userCollection = users.stream().map(existingUser -> {
-			existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+			existingUser.setPassword(Base64.encode(propertyResource.getDbSalt() + existingUser.getPassword()));
 			return existingUser;
 		}).collect(Collectors.toList());
 		return userCollection;
@@ -151,7 +152,7 @@ public class UserDaoImpl implements UserDao {
 	public User findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(String username, String emailId,
 			String password) {
 		final Optional<User> optionalUser = userRepository.findByUsernameOrPrimaryEmailIdAndPasswordAndObsoleteTrue(
-				username, emailId, passwordEncoder.encode(password));
+				username, emailId, Base64.encode(propertyResource.getDbSalt() + password));
 		optionalUser.orElseThrow(
 				() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_BY_USERNAME_AND_PASSWORD));
 		return optionalUser.get();
@@ -233,7 +234,7 @@ public class UserDaoImpl implements UserDao {
 		}
 		dbUser.setMobileVerified(existingUser.isMobileVerified());
 		if (StringUtils.isNotBlank(existingUser.getPassword())) {
-			dbUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+			dbUser.setPassword(Base64.encode(propertyResource.getDbSalt() + existingUser.getPassword()));
 		}
 		if (StringUtils.isNotBlank(existingUser.getPrimaryEmailId())) {
 			dbUser.setPrimaryEmailId(existingUser.getPrimaryEmailId());
