@@ -16,7 +16,7 @@ public interface StockDao {
 
 	Stock findById(Long identity, Boolean flag);
 
-	Collection<Stock> findByObsoleteTrueOrIdentityOrProductNameOrIdentity(String productName,Long identity);
+	Stock findByObsoleteTrueOrIdentityOrProductNameOrIdentity(String productName, Long identity);
 
 	Collection<Stock> findByProductId(Collection<Long> productIds, Boolean flag);
 

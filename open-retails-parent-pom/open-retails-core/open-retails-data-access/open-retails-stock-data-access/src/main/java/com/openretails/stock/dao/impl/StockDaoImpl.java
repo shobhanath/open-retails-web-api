@@ -76,9 +76,11 @@ public class StockDaoImpl implements StockDao {
 	}
 
 	@Override
-	public Collection<Stock> findByObsoleteTrueOrIdentityOrProductNameOrIdentity(String productName, Long identity) {
-		// TODO Auto-generated method stub
-		return null;
+	public Stock findByObsoleteTrueOrIdentityOrProductNameOrIdentity(String productName, Long identity) {
+		final Optional<Stock> optionalStock = stockRepo.findByObsoleteTrueOrIdentityOrProductNameOrIdentity(productName,
+				identity);
+		optionalStock.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.STOCK_NOT_FOUND));
+		return optionalStock.get();
 	}
 
 	@Override
@@ -99,8 +101,10 @@ public class StockDaoImpl implements StockDao {
 
 	@Override
 	public Collection<Stock> findByProductNameContainingOrIdentityObseleteTrue(String productName, Long identity) {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<Collection<Stock>> optionalStocks = stockRepo
+				.findByProductNameContainingOrIdentityObseleteTrue(productName, identity);
+		optionalStocks.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.STOCK_NOT_FOUND));
+		return optionalStocks.get();
 	}
 
 	@Override
