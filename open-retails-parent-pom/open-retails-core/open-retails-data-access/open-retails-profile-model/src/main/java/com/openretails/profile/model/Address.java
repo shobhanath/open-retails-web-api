@@ -3,8 +3,8 @@ package com.openretails.profile.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.openretails.profile.model.support.BaseEntity;
 @Entity
@@ -14,6 +14,7 @@ public class Address extends BaseEntity{
 	private static final long serialVersionUID = 2779885384896272527L;
 
 	@NotEmpty
+	@NotNull
 	@Column(name = "ADDRESS_FREE_TEXT", nullable = false,length=255)
 	private String addressFreeText;
 

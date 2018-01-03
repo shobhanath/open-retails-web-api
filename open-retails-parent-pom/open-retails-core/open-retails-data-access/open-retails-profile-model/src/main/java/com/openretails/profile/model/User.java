@@ -13,8 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.openretails.profile.model.support.BaseEntity;
 import com.openretails.profile.model.support.TableNames;
@@ -26,6 +26,7 @@ public class User extends BaseEntity {
 	private static final long serialVersionUID = -3578663668010710336L;
 
 	@NotEmpty
+	@NotNull
 	@Column(name = "FIRST_NAME", nullable = false, length = 255)
 	private String firstName;
 
@@ -33,17 +34,20 @@ public class User extends BaseEntity {
 	private String middleName;
 	@Column(name = "LAST_NAME", nullable = false, length = 255)
 	@NotEmpty
+	@NotNull
 	private String lastName;
 	@Column(name = "IS_MOBILE_VERIFIED", nullable = false)
 	private boolean isMobileVerified;
 	@Column(name = "IS_EMAIL_VERIFIED", nullable = false, length = 255)
 	private boolean isEmailVerified;
 	@NotEmpty
+	@NotNull
 	@Column(name = "PRIMARY_EMAIL_ID", nullable = false, length = 255)
 	private String primaryEmailId;
 	@Column(name = "PRIMARY_MOBILE_NUMBER", nullable = false, length = 10)
 	private Long primaryMobileNumber;
 	@NotEmpty
+	@NotNull
 	@Column(name = "PASSWORD", nullable = false, length = 60)
 	private String password;
 
@@ -52,6 +56,7 @@ public class User extends BaseEntity {
 	@Column(name = "TITLE", nullable = false, length = 255)
 	private String title;
 	@NotEmpty
+	@NotNull
 	@Column(name = "USER_NAME", nullable = false, length = 255)
 	private String username;
 
