@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openretails.common.constant.ApplicationConstants;
-import com.openretails.common.exception.OpenRetailsBusinessException;
 import com.openretails.common.exception.format.ExceptionMessage;
 import com.openretails.data.Collections;
-import com.openretails.data.Single;
 import com.openretails.data.StockDTO;
 import com.openretails.stock.manager.StockManager;
 import com.openretails.stock.web.exception.handler.GenericExceptionHandler;
@@ -151,35 +149,6 @@ public class StockServices extends GenericExceptionHandler {
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
-	@Override
-	public StockDTO findByObsoleteTrueOrIdentityOrProductNameOrIdentity(String productName, Long identity) {
-		try {
-			return stockMapper.map(stockDao.findByObsoleteTrueOrIdentityOrProductNameOrIdentity(productName, identity));
-
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
-
-	@Override
-	public Collections<StockDTO> findByProductId(Collections<Long> productIds, Boolean flag) {
-		try {
-			return new Collections<>(stockMapper.mapDTO(stockDao.findByProductId(productIds.getCollection(), flag)));
-
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
-
-	@Override
-	public StockDTO findByProductId(Long productId, Boolean flag) {
-		try {
-			return stockMapper.map(stockDao.findByProductId(productId, flag));
-
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
 
 	@ApiOperation(value = "${StockServices.findByProductIds.value}", notes = "${StockServices.findByProductIds.note}")
 
@@ -190,7 +159,7 @@ public class StockServices extends GenericExceptionHandler {
 			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
 			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
 
-	@PostMapping(value = "/products/get-by-product-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@PostMapping(value = "/stocks/get-by-product-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<StockDTO>> findByProductIds(
@@ -200,54 +169,44 @@ public class StockServices extends GenericExceptionHandler {
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
-	@Override
-	public Collections<StockDTO> findByProductNameContainingOrIdentityObseleteTrue(String productName, Long identity) {
-		try {
-			return new Collections<>(stockMapper
-					.mapDTO(stockDao.findByProductNameContainingOrIdentityObseleteTrue(productName, identity)));
+	@ApiOperation(value = "${StockServices.findProductNameByStockId.value}", notes = "${StockServices.findProductNameByStockId.note}")
 
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+
+	@PostMapping(value = "/stocks/get-name-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<String>> findProductNameByStockId(
+			@ApiParam(value = "identities", required = true) @RequestBody Collections<Long> identities,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+			return new ResponseEntity<>(stockManager.findProductNameById(identities,
+					active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
-	@Override
-	public Collections<Long> findIdByProductName(Collections<String> productNames, Boolean flag) {
-		try {
-			return new Collections<>(stockDao.findIdByProductName(productNames.getCollection(), flag));
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
 
-	@Override
-	public Single<Long> findIdByProductName(String productName, Boolean flag) {
-		try {
-			return new Single<>(stockDao.findIdByProductName(productName, flag));
+	@ApiOperation(value = "${StockServices.findStockIdByProductName.value}", notes = "${StockServices.findStockIdByProductName.note}")
 
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
 
-	@Override
-	public Collections<String> findProductNameById(Collections<Long> identities, Boolean flag) {
-		try {
-			return new Collections<>(stockDao.findProductNameById(identities.getCollection(), flag));
+	@PostMapping(value = "/stocks/get-id-by-names", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Collections<Long>> findStockIdByProductName(
+			@ApiParam(value = "names", required = true) @RequestBody Collections<String> names,
+			@RequestParam(value = "active", required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
+			return new ResponseEntity<>(stockManager.findIdByProductName(names,
+					active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
-	}
-
-	@Override
-	public Single<String> findProductNameById(Long identity, Boolean flag) {
-		try {
-			return new Single<>(stockDao.findProductNameById(identity, flag));
-
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
 	}
 
 	@ApiOperation(value = "${StockServices.update.value}", notes = "${StockServices.update.note}")
@@ -267,6 +226,5 @@ public class StockServices extends GenericExceptionHandler {
 	@ApiParam(value = "stocks", required = true) @RequestBody Collections<StockDTO> stocks) {
 		return new ResponseEntity<>(stockManager.update(stocks), HttpStatus.OK);
 	}
-
 
 }
