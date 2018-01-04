@@ -18,13 +18,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.EqualsAndHashCode;
+
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
 public abstract class BaseEntity implements Serializable{
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 5537554836633470687L;
+
+	private static final long serialVersionUID = -3636903859095113970L;
 
 	public static final String IDENTITY = "identity";
 
@@ -50,44 +51,7 @@ public abstract class BaseEntity implements Serializable{
 	@LastModifiedDate
 	private Date modified;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final BaseEntity other = (BaseEntity) obj;
-		if (created == null) {
-			if (other.created != null) {
-				return false;
-			}
-		} else if (!created.equals(other.created)) {
-			return false;
-		}
-		if (identity == null) {
-			if (other.identity != null) {
-				return false;
-			}
-		} else if (!identity.equals(other.identity)) {
-			return false;
-		}
-		if (modified == null) {
-			if (other.modified != null) {
-				return false;
-			}
-		} else if (!modified.equals(other.modified)) {
-			return false;
-		}
-		if (obsolete != other.obsolete) {
-			return false;
-		}
-		return true;
-	}
+	
 
 	/*
 	 * @CreatedBy
@@ -127,17 +91,6 @@ public abstract class BaseEntity implements Serializable{
 	 */
 	public Date getModified() {
 		return modified;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (created == null ? 0 : created.hashCode());
-		result = prime * result + (identity == null ? 0 : identity.hashCode());
-		result = prime * result + (modified == null ? 0 : modified.hashCode());
-		result = prime * result + (obsolete ? 1231 : 1237);
-		return result;
 	}
 
 	/*

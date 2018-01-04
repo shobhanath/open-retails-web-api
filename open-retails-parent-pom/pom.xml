@@ -55,6 +55,8 @@
 		<hibernate3-maven-plugin.version>2.2</hibernate3-maven-plugin.version>
 		<sql-maven-plugin.version>1.4</sql-maven-plugin.version>
 		<validation-api.version>2.0.0.Final</validation-api.version>
+		<javax.el-api.version>3.0.0</javax.el-api.version>
+		<javax.el.version>2.2.6</javax.el.version>
 	</properties>
 
 	<!-- Spring boot parent pom -->
@@ -251,6 +253,17 @@
 				<version>${validation-api.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>javax.el-api</artifactId>
+				<version>${javax.el-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.web</groupId>
+				<artifactId>javax.el</artifactId>
+				<version>${javax.el.version}</version>
+			</dependency>
 
 			<!-- Others utility dependency end -->
 		</dependencies>
