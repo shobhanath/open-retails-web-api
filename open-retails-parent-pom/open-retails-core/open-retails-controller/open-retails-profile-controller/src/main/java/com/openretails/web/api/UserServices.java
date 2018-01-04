@@ -39,12 +39,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.create.value}", notes = "${UserServices.create.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -56,12 +56,12 @@ public class UserServices extends GenericExceptionHandler {
 	}
 
 	@ApiOperation(value = "${UserServices.enableOrDisable.value}", notes = "${UserServices.enableOrDisable.note}")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PutMapping(value = "/users/{enable}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -75,10 +75,11 @@ public class UserServices extends GenericExceptionHandler {
 	@ApiOperation(value = "${UserServices.findAll.value}", notes = "${UserServices.findAll.note}")
 
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@GetMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE })
 
@@ -93,11 +94,11 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findByUser.value}", notes = "${UserServices.findByUser.note}")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@GetMapping(value = "/users/{user:.+}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -113,12 +114,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findIdentitiesByUsernameOrPrimayEmailAddress.value}", notes = "${UserServices.findIdentitiesByUsernameOrPrimayEmailAddress.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users/get-ids-by-emails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -132,12 +133,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findIdentityByUsernameOrPrimayEmailAddress.value}", notes = "${UserServices.findIdentityByUsernameOrPrimayEmailAddress.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@GetMapping(value = "/users/{user:.+}/id", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -150,12 +151,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findUsernameOrPrimaryEmailByIdentity.value}", notes = "${UserServices.findUsernameOrPrimaryEmailByIdentity.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users/get-emails-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -169,12 +170,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findUsernameOrPrimayEmailAddressById.value}", notes = "${UserServices.findUsernameOrPrimayEmailAddressById.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@GetMapping(value = "/users/{user}/email", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -187,12 +188,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findUsersById.value}", notes = "${UserServices.findUsersById.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users/get-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -206,12 +207,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.findUsersByUsernameOrEmail.value}", notes = "${UserServices.findUsersByUsernameOrEmail.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users/get-by-emails", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -225,12 +226,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.partialUpdate.value}", notes = "${UserServices.partialUpdate.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PatchMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -243,12 +244,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PutMapping(value = "/users", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -261,12 +262,12 @@ public class UserServices extends GenericExceptionHandler {
 
 	@ApiOperation(value = "${UserServices.validate.value}", notes = "${UserServices.validate.note}")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad Request", response = ExceptionMessage.class),
-			@ApiResponse(code = 401, message = "Unauthorized", response = ExceptionMessage.class),
-			@ApiResponse(code = 403, message = "Forbidden", response = ExceptionMessage.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ExceptionMessage.class),
-			@ApiResponse(code = 500, message = "Something wrong in Server", response = ExceptionMessage.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
+			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
+			@ApiResponse(code = 401, message = ApplicationConstants.UNAUTHORIZED, response = ExceptionMessage.class),
+			@ApiResponse(code = 403, message = ApplicationConstants.FORBIDDEN, response = ExceptionMessage.class),
+			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
+			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
 	@PostMapping(value = "/users/authenticate", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
