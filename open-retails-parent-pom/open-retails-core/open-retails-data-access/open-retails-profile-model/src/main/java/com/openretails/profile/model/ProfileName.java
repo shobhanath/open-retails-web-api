@@ -1,6 +1,0 @@
-package com.openretails.profile.model;
-
-public enum ProfileName {
-	USER_READ, USER_WRITE, USER_UPDATE, USER_DELETE, USER_SUPER, ADMIN_READ, ADMIN_WRITE, ADMIN_UPDATE, ADMIN_DELETE, ADMIN_SUPER;
-
-}
