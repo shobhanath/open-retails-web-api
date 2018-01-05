@@ -1,5 +1,5 @@
 package com.openretails.data;
 
 public enum UserType {
-	TECHNICAL_USER, APPLICATION_USER, NORMAL_USER
+	ADMIN_USER, APPLICATION_USER, TECHNICAL_USER, END_USER
 }

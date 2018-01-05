@@ -1,5 +1,5 @@
 package com.openretails.profile.model;
 
 public enum UserType {
-	TECHNICAL_USER, APPLICATION_USER, NORMAL_USER
+	ADMIN_USER, APPLICATION_USER, TECHNICAL_USER, END_USER
 }

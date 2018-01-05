@@ -12,6 +12,7 @@ public final class BusinessMessages {
 	public static final String VALIDATE_ADDRESS_OBJ = "Address should not be null or empty";
 	public static final String VALIDATE_USER_OBJ = "User object should not be null or empty";
 	public static final String VALIDATE_USER_PASSWORD = "Username and password should not be null or empty";
+	public static final String VALIDATE_IDENTITY_NULL = "Invalid identity, it should be null";
 
 	private BusinessMessages() {
 	}
