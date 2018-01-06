@@ -1,5 +1,7 @@
 package com.openretails.profile.manager.impl;
 
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import com.openretails.common.constant.BusinessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.data.Collections;
+import com.openretails.data.EmailAddress;
 import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.profile.dao.UserDao;
@@ -53,9 +56,9 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public Collections<UserDTO> findByUser(Collections<String> users, Boolean flag) {
-		UserValidator.validateEmailAddress(users.getCollection());
-		return new Collections<>(userMapper.mapDTO(userDao.findByUser(users.getCollection(), flag)));
+	public Collections<UserDTO> findByUser(Collections<EmailAddress> users, Boolean flag) {
+		return new Collections<>(userMapper.mapDTO(userDao.findByUser(
+				users.getCollection().stream().map(EmailAddress::getEmail).collect(Collectors.toList()), flag)));
 	}
 
 	@Override

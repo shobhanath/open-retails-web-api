@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -24,6 +25,7 @@ public abstract class BaseDTO implements Serializable {
     
 	@NotNull(message = UserValidationMessages.VALIDATE_IDENTITY,groups = Existing.class)
     @Null(message = UserValidationMessages.VALIDATE_IDENTITY_NULL,groups = New.class)
+	@Min(value = 1, message = UserValidationMessages.VALIDATE_IDENTITY,groups = {Existing.class})
 	private Long identity;
 	
 	@AssertTrue(message = UserValidationMessages.VALIDATE_OBSOLETE,groups = {New.class})

@@ -3,6 +3,8 @@ package com.openretails.profile.manager.validator;
 import java.util.Collection;
 import java.util.regex.Matcher;
 
+import javax.validation.constraints.Email;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.openretails.common.constant.ApplicationConstants;
@@ -102,7 +104,7 @@ public final class UserValidator {
 		emails.forEach(primaryEmailId -> validateEmailAddress(primaryEmailId));
 	}
 
-	public static void validateEmailAddress(String primaryEmailId) {
+	public static void validateEmailAddress(@Email String primaryEmailId) {
 		if (StringUtils.isBlank(primaryEmailId) || !isEmailValid(primaryEmailId)) {
 			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_EMIL_ADDRESS);
 		}

@@ -1,5 +1,8 @@
 package com.openretails.web.api;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import com.openretails.common.constant.ApplicationConstants;
 import com.openretails.common.constant.ServiceMessages;
 import com.openretails.common.exception.format.ExceptionMessage;
 import com.openretails.data.Collections;
+import com.openretails.data.EmailAddress;
 import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.data.UsernameAndPasswordDTO;
@@ -33,6 +37,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @Api(value = "/users")
+@Validated
 public class UserServices extends GenericExceptionHandler {
 
 	@Autowired
@@ -219,10 +224,11 @@ public class UserServices extends GenericExceptionHandler {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<UserDTO>> findUsersByUsernameOrEmail(
-			@ApiParam(value = ServiceMessages.USERS, required = true) @RequestBody Collections<String> users,
+			@ApiParam(value = ServiceMessages.USERS, required = true) @RequestBody @Valid @NotNull Collections<EmailAddress> users,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findByUser(users,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
+
 	}
 
 	@ApiOperation(value = "${UserServices.update.value}", notes = "${UserServices.update.note}")
@@ -263,5 +269,6 @@ public class UserServices extends GenericExceptionHandler {
 				userManager.validate(credential.getData().getUsername(), credential.getData().getPassword()),
 				HttpStatus.OK);
 	}
+
 
 }

@@ -24,6 +24,8 @@ public final class UserValidationMessages {
 	public static final String VALIDATE_USERNAME = "Username should not be null or empty";
 	public static final String VALIDATE_USERNAME_SIZE = "Username should be minimum 6 and maximum 20 character";
 	public static final String VALIDATE_GENDER = "Gender should be either MALE or FEMALE";
+	public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private UserValidationMessages() {
 	}
 }
