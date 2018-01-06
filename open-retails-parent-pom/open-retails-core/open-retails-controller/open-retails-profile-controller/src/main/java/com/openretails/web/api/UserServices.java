@@ -262,7 +262,7 @@ public class UserServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<UserDTO>> update(
 
-	@ApiParam(value = USERS, required = true) @RequestBody Collections<UserDTO> users) {
+	@ApiParam(value = USERS, required = true) @Validated(UserDTO.Existing.class) @RequestBody Collections<UserDTO> users) {
 		return new ResponseEntity<>(userManager.update(users), HttpStatus.OK);
 	}
 

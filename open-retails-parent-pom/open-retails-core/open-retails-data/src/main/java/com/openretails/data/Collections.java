@@ -2,8 +2,11 @@ package com.openretails.data;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 public class Collections<T> {
 
+	@Valid
 	private Collection<T> collection;
 
 	public Collections() {

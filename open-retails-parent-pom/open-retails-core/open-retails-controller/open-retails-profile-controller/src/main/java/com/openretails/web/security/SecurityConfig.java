@@ -12,7 +12,7 @@ import com.openretails.profile.manager.CustomUserDetailsManager;
 
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = false)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired

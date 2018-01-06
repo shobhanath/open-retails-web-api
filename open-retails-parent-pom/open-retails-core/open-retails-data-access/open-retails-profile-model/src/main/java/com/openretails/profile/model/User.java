@@ -1,5 +1,6 @@
 package com.openretails.profile.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.openretails.profile.model.support.BaseEntity;
 import com.openretails.profile.model.support.TableNames;
@@ -76,6 +79,10 @@ public class User extends BaseEntity {
 
 	@Column(name = "SALARY", nullable = false)
 	private double salary;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "DOB", nullable = false, updatable = false)
+	private Date birthDate;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = TableNames.USERS_ROLES, joinColumns = @JoinColumn(name = "USER_ID") , inverseJoinColumns = @JoinColumn(name = "ROLE_ID") )

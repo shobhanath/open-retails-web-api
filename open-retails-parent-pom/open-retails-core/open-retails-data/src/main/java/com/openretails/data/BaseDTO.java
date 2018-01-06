@@ -14,19 +14,18 @@ import lombok.Data;
 
 @Data
 public abstract class BaseDTO implements Serializable {
-	private static final long serialVersionUID = 5537554836633470687L;
-
 	public interface Existing {
     }
 
-    public interface New {
+	public interface New {
     }
+
+    private static final long serialVersionUID = 5537554836633470687L;
     
 	@NotNull(message = UserValidationMessages.VALIDATE_IDENTITY,groups = Existing.class)
     @Null(message = UserValidationMessages.VALIDATE_IDENTITY_NULL,groups = New.class)
 	private Long identity;
 	
-	@NotNull(message = UserValidationMessages.VALIDATE_OBSOLETE_NOT_NULL,groups = {New.class,Existing.class})
 	@AssertTrue(message = UserValidationMessages.VALIDATE_OBSOLETE,groups = {New.class})
 	private boolean obsolete;
 	

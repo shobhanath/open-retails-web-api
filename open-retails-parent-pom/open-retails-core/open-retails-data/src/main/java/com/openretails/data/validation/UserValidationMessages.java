@@ -6,7 +6,6 @@ public final class UserValidationMessages {
 	public static final String VALIDATE_IDENTITY_NULL = "Invalid identity, it should be null";
 	public static final String VALIDATE_OBSOLETE_NOT_NULL = "Invalid obsolete, it should not be null. Possible values should be either true or false";
 	public static final String VALIDATE_OBSOLETE = "Invalid obsolete, it should be true";
-
 	public static final String VALIDATE_AGE = "Age should be minimum 18 and maximum 60 years";
 	public static final String VALIDATE_PRIMARY_MOBILE_NUMBER = "Primary mobile number must be 10 digits number";
 	public static final String VALIDATE_FIRST_NAME = "First name should not be null or empty";
