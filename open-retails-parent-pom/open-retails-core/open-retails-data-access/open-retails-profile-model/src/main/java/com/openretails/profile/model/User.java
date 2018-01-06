@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.openretails.profile.model.support.BaseEntity;
 import com.openretails.profile.model.support.TableNames;
@@ -26,7 +27,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = TableNames.USERS)
+@Table(name = TableNames.USERS,uniqueConstraints=@UniqueConstraint(columnNames={"PRIMARY_EMAIL_ID","USER_NAME"}))
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor

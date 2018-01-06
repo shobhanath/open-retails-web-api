@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.openretails.common.constant.BusinessMessages;
 import com.openretails.common.constant.SpringBeanIds;
-import com.openretails.common.exception.OpenRetailsBusinessException;
 import com.openretails.common.exception.OpenRetailsValidationException;
 import com.openretails.data.Collections;
 import com.openretails.data.Single;
@@ -28,13 +27,7 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public Collections<UserDTO> create(Collections<UserDTO> userDTOs) {
-		try {
-			UserValidator.fullValidate(userDTOs.getCollection(), false);
-			return new Collections<>(userMapper.mapDTO(userDao.create(userMapper.mapEntity(userDTOs.getCollection()))));
-
-		} catch (final Exception e) {
-			throw new OpenRetailsBusinessException(e.getMessage(), e.getCause());
-		}
+		return new Collections<>(userMapper.mapDTO(userDao.create(userMapper.mapEntity(userDTOs.getCollection()))));
 	}
 
 	@Override

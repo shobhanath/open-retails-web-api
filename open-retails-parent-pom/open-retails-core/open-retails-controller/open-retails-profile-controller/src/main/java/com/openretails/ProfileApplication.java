@@ -15,12 +15,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class ProfileApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(ProfileApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProfileApplication.class);
-		log.debug("SpringBootProfileApplication is started");
+		LOGGER.debug("SpringBootProfileApplication is started");
 	}
-
 
 }
