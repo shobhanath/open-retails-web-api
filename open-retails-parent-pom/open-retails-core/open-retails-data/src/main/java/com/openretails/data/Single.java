@@ -1,7 +1,10 @@
 package com.openretails.data;
 
+import javax.validation.Valid;
+
 public class Single<T> {
 
+	@Valid
 	private T data;
 
 	public Single() {

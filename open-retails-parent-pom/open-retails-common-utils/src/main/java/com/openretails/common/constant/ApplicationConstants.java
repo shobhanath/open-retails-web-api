@@ -17,7 +17,7 @@ public final class ApplicationConstants {
 	public static final String NOT_FOUND = "Not Found";
 	public static final String INTERNAL_SERVER_ERROR = "Something wrong in Server";
 	public static final String OK = "OK";
-
+	public static final String COLON = ":";
 	private ApplicationConstants() {
 	}
 }

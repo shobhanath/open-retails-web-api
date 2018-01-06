@@ -1,7 +1,10 @@
 package com.openretails.web.api;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import com.openretails.data.EmailAddress;
 import com.openretails.data.Single;
 import com.openretails.data.UserDTO;
 import com.openretails.data.UsernameAndPasswordDTO;
+import com.openretails.data.validation.UserValidationMessages;
 import com.openretails.profile.manager.UserManager;
 import com.openretails.web.exception.handler.GenericExceptionHandler;
 
@@ -73,7 +77,7 @@ public class UserServices extends GenericExceptionHandler {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<UserDTO>> enableOrDisable(
-			@ApiParam(value = ServiceMessages.USERS, required = true) @RequestBody Collections<String> users,
+			@ApiParam(value = ServiceMessages.USERS, required = true) @Valid @NotNull @RequestBody Collections<EmailAddress> users,
 			@ApiParam(value = "enable", required = true) @PathVariable("enable") boolean enable) {
 		return new ResponseEntity<>(userManager.enableOrDisable(users, enable), HttpStatus.OK);
 	}
@@ -110,7 +114,7 @@ public class UserServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<UserDTO> findByUser(
 			@ApiParam(value = "${UserServices.findByUser.param1}", required = false) @RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active,
-			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) String user) {
+			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) @NotBlank @Size(min = 2) String user) {
 		final Boolean isActive = active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active);
 		final boolean isNumberic = StringUtils.isNumeric(user);
 		return new ResponseEntity<>(isNumberic ? userManager.findById(Long.valueOf(user), isActive)
@@ -131,7 +135,7 @@ public class UserServices extends GenericExceptionHandler {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<Long>> findIdentitiesByUsernameOrPrimayEmailAddress(
-			@ApiParam(value = ServiceMessages.USERS, required = true) @RequestBody Collections<String> users,
+			@ApiParam(value = ServiceMessages.USERS, required = true) @RequestBody @NotNull Collections<String> users,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findIdByUser(users,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
@@ -149,7 +153,7 @@ public class UserServices extends GenericExceptionHandler {
 	@GetMapping(value = "/users/{user:.+}/id", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Single<Long>> findIdentityByUsernameOrPrimayEmailAddress(
-			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) String user,
+			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) @NotBlank @Size(min = 2) String user,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findIdByUser(user,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
@@ -168,7 +172,7 @@ public class UserServices extends GenericExceptionHandler {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<String>> findUsernameOrPrimaryEmailByIdentity(
-			@ApiParam(value = ServiceMessages.IDENTITIES, required = true) @RequestBody Collections<Long> identities,
+			@ApiParam(value = ServiceMessages.IDENTITIES, required = true) @RequestBody @NotNull Collections<Long> identities,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findUsernameById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
@@ -186,7 +190,7 @@ public class UserServices extends GenericExceptionHandler {
 	@GetMapping(value = "/users/{user}/email", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Single<String>> findUsernameOrPrimayEmailAddressById(
-			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) long user,
+			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) @Min(value = 1, message = UserValidationMessages.VALIDATE_IDENTITY) long user,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findUsernameById(user,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
@@ -205,7 +209,7 @@ public class UserServices extends GenericExceptionHandler {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Collections<UserDTO>> findUsersById(
-			@ApiParam(value = ServiceMessages.IDENTITIES, required = true) @RequestBody Collections<Long> identities,
+			@ApiParam(value = ServiceMessages.IDENTITIES, required = true) @RequestBody @NotNull Collections<Long> identities,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findById(identities,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
@@ -264,7 +268,7 @@ public class UserServices extends GenericExceptionHandler {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<UserDTO> validate(
 
-	@ApiParam(value = "credential", required = true) @RequestBody Single<UsernameAndPasswordDTO> credential) {
+	@ApiParam(value = "credential", required = true) @RequestBody @Valid @NotNull Single<UsernameAndPasswordDTO> credential) {
 		return new ResponseEntity<>(
 				userManager.validate(credential.getData().getUsername(), credential.getData().getPassword()),
 				HttpStatus.OK);

@@ -10,7 +10,7 @@ public interface UserManager {
 
 	Collections<UserDTO> create(Collections<UserDTO> users);
 
-	Collections<UserDTO> enableOrDisable(Collections<String> users, boolean isEnabled);
+	Collections<UserDTO> enableOrDisable(Collections<EmailAddress> users, boolean isEnabled);
 
 	Collections<UserDTO> findAll(Boolean flag);
 
@@ -31,8 +31,6 @@ public interface UserManager {
 	Single<String> findUsernameById(Long identity, Boolean flag);
 
 	User getCurrentUser();
-
-	Collections<UserDTO> partialUpdate(Collections<UserDTO> users);
 
 	Collections<UserDTO> update(Collections<UserDTO> users);
 

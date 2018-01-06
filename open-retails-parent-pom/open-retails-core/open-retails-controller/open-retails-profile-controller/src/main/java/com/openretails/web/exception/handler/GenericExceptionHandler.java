@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -48,7 +49,7 @@ public class GenericExceptionHandler {
 			exceptionMessage.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			exceptionMessage.setErrorCode(HttpStatus.BAD_REQUEST.getReasonPhrase());
 			return new ResponseEntity<>(exceptionMessage, HttpStatus.BAD_REQUEST);
-		} else if (ex instanceof OpenRetailsValidationException) {
+		} else if (ex instanceof OpenRetailsValidationException || ex instanceof ConstraintViolationException) {
 			exceptionMessage.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			exceptionMessage.setErrorCode(HttpStatus.BAD_REQUEST.getReasonPhrase());
 			return new ResponseEntity<>(exceptionMessage, HttpStatus.BAD_REQUEST);

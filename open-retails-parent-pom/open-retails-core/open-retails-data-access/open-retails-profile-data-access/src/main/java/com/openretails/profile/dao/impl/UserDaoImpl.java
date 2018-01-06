@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.openretails.common.constant.ApplicationConstants;
 import com.openretails.common.constant.DataAccessMessages;
 import com.openretails.common.constant.SpringBeanIds;
 import com.openretails.common.exception.OpenRetailsDataAccessException;
@@ -108,13 +109,16 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findByUser(String user, Boolean flag) {
-
-		user = user.trim().toLowerCase();
-		final Optional<User> optionalUser = null == flag ? userRepository.findByUsernameOrPrimaryEmailId(user, user)
-				: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, user, user);
+	public User findByUser(final String user, Boolean flag) {
+		final String userLower = user.trim().toLowerCase();
+		final Optional<User> optionalUser = null == flag
+				? userRepository.findByUsernameOrPrimaryEmailId(userLower, userLower)
+				: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userLower, userLower);
 		return optionalUser.orElseThrow(() -> new OpenRetailsDataAccessException(
-				DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
+				new StringBuilder(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL)
+						.append(ApplicationConstants.COLON)
+						.append(user)
+						.toString()));
 
 	}
 
