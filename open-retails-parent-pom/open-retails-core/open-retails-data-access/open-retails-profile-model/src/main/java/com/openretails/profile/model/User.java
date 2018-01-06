@@ -62,6 +62,7 @@ public class User extends BaseEntity {
 	private String username;
 
 	@Enumerated(EnumType.ORDINAL)
+	@Column(nullable=false)
 	private UserType userType;
 
 	@JoinColumn(name = "PERMANENT_ADDRESS_ID")
@@ -76,6 +77,7 @@ public class User extends BaseEntity {
 	private Integer age;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable=false)
 	private Gender gender;
 
 	@Column(name = "SALARY", nullable = false)
