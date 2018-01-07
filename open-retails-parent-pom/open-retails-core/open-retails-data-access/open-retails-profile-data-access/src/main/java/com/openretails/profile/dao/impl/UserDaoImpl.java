@@ -46,9 +46,8 @@ public class UserDaoImpl implements UserDao {
 	public Collection<User> enableOrDisable(Collection<String> users, boolean isEnabled) {
 		try {
 			users = users.stream().map(user -> user.trim().toLowerCase()).collect(Collectors.toList());
-			final Optional<Collection<User>> optionalUsers = userRepository.findByUsernameOrPrimaryEmailId(users,
-					users);
-			final Collection<User> userCollection = optionalUsers
+			final Collection<User> userCollection = userRepository.findByUsernameOrPrimaryEmailId(users, users)
+					.filter(userList -> !userList.isEmpty())
 					.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.USERS_NOT_FOUND)).stream()
 					.map(existingUser -> {
 						existingUser.setObsolete(isEnabled);
@@ -74,7 +73,7 @@ public class UserDaoImpl implements UserDao {
 	public Collection<User> findAll(Boolean flag) {
 		final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.getAll()
 				: userRepository.findAll(flag);
-		return optionalUsers
+		return optionalUsers.filter(users -> !users.isEmpty())
 				.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_ALL_USERS));
 	}
 
@@ -83,6 +82,7 @@ public class UserDaoImpl implements UserDao {
 		final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.findByIdentity(identities)
 				: userRepository.findByIdentity(flag, identities);
 		return optionalUsers
+.filter(users -> !users.isEmpty())
 				.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 	}
 
@@ -103,7 +103,8 @@ public class UserDaoImpl implements UserDao {
 		final Optional<Collection<User>> optionalUsers = null == flag
 				? userRepository.findByUsernameOrPrimaryEmailId(userCollection, userCollection)
 				: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userCollection, userCollection);
-		return optionalUsers.orElseThrow(() -> new OpenRetailsDataAccessException(
+		return optionalUsers.filter(userList -> !userList.isEmpty())
+				.orElseThrow(() -> new OpenRetailsDataAccessException(
 				DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
 
 	}

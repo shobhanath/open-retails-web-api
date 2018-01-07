@@ -2,7 +2,7 @@ package com.openretails.data.validation;
 
 public final class UserValidationMessages {
 
-	public static final String VALIDATE_IDENTITY = "Invalid identity, it should be greater than zero";
+	public static final String VALIDATE_IDENTITY = "Invalid identity, it should be greater than 0";
 	public static final String VALIDATE_IDENTITY_NULL = "Invalid identity, it should be null";
 	public static final String VALIDATE_OBSOLETE_NOT_NULL = "Invalid obsolete, it should not be null. Possible values should be either true or false";
 	public static final String VALIDATE_OBSOLETE = "Invalid obsolete, it should be true";

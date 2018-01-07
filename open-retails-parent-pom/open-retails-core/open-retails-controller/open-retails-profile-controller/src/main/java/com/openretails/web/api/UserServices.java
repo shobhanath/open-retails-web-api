@@ -1,9 +1,9 @@
 package com.openretails.web.api;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
@@ -190,7 +190,7 @@ public class UserServices extends GenericExceptionHandler {
 	@GetMapping(value = "/users/{user}/email", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Single<String>> findUsernameOrPrimayEmailAddressById(
-			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) @Min(value = 1, message = UserValidationMessages.VALIDATE_IDENTITY) long user,
+			@PathVariable(ServiceMessages.USER) @ApiParam(value = ServiceMessages.USER, required = true) @Positive(message = UserValidationMessages.VALIDATE_IDENTITY) long user,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findUsernameById(user,
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
