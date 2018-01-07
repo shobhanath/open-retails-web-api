@@ -27,74 +27,16 @@ public final class UserValidator {
 
 	public static <T> void fullValidate(Collection<T> objects, boolean isUpdate) {
 		for (final Object obj : objects) {
-			if (obj instanceof UserDTO) {
-				fullValidate((UserDTO) obj, isUpdate);
-			}
 			if (obj instanceof AddressDTO) {
 				fullValidate((AddressDTO) obj, isUpdate);
 			}
 		}
 	}
 
-	public static void fullValidate(UserDTO userDTO, boolean isUpdate) {
-		validateObj(userDTO);
-		if (isUpdate) {
-			validateId(userDTO.getIdentity());
-		}
-		final Integer age = userDTO.getAge();
-		if (age == null || age <= 0 || age > 100) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_AGE);
-		}
-
-		final Long primaryMobileNumber = userDTO.getPrimaryMobileNumber();
-		if (primaryMobileNumber == null || primaryMobileNumber <= 0
-				|| String.valueOf(primaryMobileNumber).length() != 10) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_MOBILE_NUMBER);
-		}
-
-		if (StringUtils.isBlank(userDTO.getFirstName())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_FIRST_NAME);
-		}
-		if (StringUtils.isBlank(userDTO.getLastName())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_LAST_NAME);
-		}
-		if (StringUtils.isBlank(userDTO.getPassword())) {
-			throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PASSWORD);
-		}
-		validateEmailAddress(userDTO.getPrimaryEmailId());
-		fullValidate(userDTO.getPermanentAddress(), isUpdate);
-	}
 
 	public static boolean isEmailValid(String emailStr) {
 		final Matcher matcher = ApplicationConstants.VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
 		return matcher.find();
-	}
-
-	public static void partialValidate(Collection<UserDTO> users) {
-		validateObjAndIdenity(users);
-		users.forEach(userDTO -> {
-			final Integer age = userDTO.getAge();
-			if (age != null && (age < 0 || age > 100)) {
-				throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_AGE);
-			}
-
-			final Long primaryMobileNumber = userDTO.getPrimaryMobileNumber();
-			if (primaryMobileNumber != null
-					&& (primaryMobileNumber < 0 || String.valueOf(primaryMobileNumber).length() != 10)) {
-				throw new OpenRetailsValidationException(BusinessMessages.VALIDATE_PRIMARY_MOBILE_NUMBER);
-			}
-
-			if (StringUtils.isNotBlank(userDTO.getPrimaryEmailId())) {
-				isEmailValid(userDTO.getPrimaryEmailId());
-			}
-			if (userDTO.getPermanentAddress() != null) {
-				validateId(userDTO.getPermanentAddress().getIdentity());
-			}
-			if (userDTO.getSecondaryAddress() != null) {
-				validateId(userDTO.getSecondaryAddress().getIdentity());
-			}
-
-		});
 	}
 
 	public static void validateEmailAddress(Collection<String> emails) {

@@ -7,7 +7,7 @@ public final class UserValidationMessages {
 	public static final String VALIDATE_OBSOLETE_NOT_NULL = "Invalid obsolete, it should not be null. Possible values should be either true or false";
 	public static final String VALIDATE_OBSOLETE = "Invalid obsolete, it should be true";
 	public static final String VALIDATE_AGE = "Age should be minimum 18 and maximum 60 years";
-	public static final String VALIDATE_PRIMARY_MOBILE_NUMBER = "Primary mobile number must be 10 digits number";
+	public static final String VALIDATE_PRIMARY_MOBILE_NUMBER = "Primary mobile number must be 10 digits number and should starts with 7,8 or 9";
 	public static final String VALIDATE_FIRST_NAME = "First name should not be null or empty";
 	public static final String VALIDATE_LAST_NAME = "Last name should not be null or empty";
 	public static final String VALIDATE_PASSWORD = "Password should not be null or empty";
@@ -26,6 +26,7 @@ public final class UserValidationMessages {
 	public static final String VALIDATE_GENDER = "Gender should be either MALE or FEMALE";
 	public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	public static final String MOBILE_PATTERN = "^[789]\\d{9}$";
 	private UserValidationMessages() {
 	}
 }

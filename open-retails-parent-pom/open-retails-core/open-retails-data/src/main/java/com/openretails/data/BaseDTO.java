@@ -8,7 +8,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.openretails.data.validation.UserValidationMessages;
 
 import lombok.Data;
@@ -35,10 +34,8 @@ public abstract class BaseDTO implements Serializable {
 	
 	private String modifiedByUser;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date createdDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date modifiedDate;
 
 }

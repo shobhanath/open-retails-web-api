@@ -10,11 +10,13 @@ import com.openretails.profile.model.support.TableNames;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 @Entity
 @Table(name = TableNames.ADDRESS)
 @Data
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class Address extends BaseEntity{
 
 	private static final long serialVersionUID = 2779885384896272527L;

@@ -3,8 +3,6 @@ package com.openretails.data;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -37,9 +35,10 @@ public class UserDTO extends BaseDTO {
 	@NotBlank(message = UserValidationMessages.VALIDATE_PRIMARY_EMIL_ADDRESS,groups = {New.class,Existing.class})
 	@Email(message=UserValidationMessages.VALIDATE_PRIMARY_EMIL_ADDRESS,groups = {New.class,Existing.class})
 	private String primaryEmailId;
-	@Min(value = 10, message = UserValidationMessages.VALIDATE_PRIMARY_MOBILE_NUMBER,groups = {New.class,Existing.class})
-    @Max(value = 10, message = UserValidationMessages.VALIDATE_PRIMARY_MOBILE_NUMBER,groups = {New.class,Existing.class})
-	private Long primaryMobileNumber;
+	
+	@NotNull(message = UserValidationMessages.VALIDATE_PRIMARY_MOBILE_NUMBER,groups = {New.class,Existing.class})
+	@Pattern(message = UserValidationMessages.VALIDATE_PRIMARY_MOBILE_NUMBER,regexp=UserValidationMessages.MOBILE_PATTERN,groups = {New.class,Existing.class})
+	private String primaryMobileNumber;
 	@NotNull(message = UserValidationMessages.VALIDATE_USER_TYPE,groups = {New.class,Existing.class})
 	private UserType userType;
 	@NotBlank(message = UserValidationMessages.VALIDATE_PASSWORD,groups = New.class)
@@ -54,9 +53,6 @@ public class UserDTO extends BaseDTO {
 	@NotNull(message = AddressValidationMessages.VALIDATE_PRIMARY_ADDRESS,groups = {New.class,Existing.class})
 	private AddressDTO permanentAddress;
 	private AddressDTO secondaryAddress;
-	@Min(value = 18, message = UserValidationMessages.VALIDATE_AGE,groups = {New.class,Existing.class})
-    @Max(value = 60, message = UserValidationMessages.VALIDATE_AGE,groups = {New.class,Existing.class})
-	private Integer age;
 	@NotNull(message = UserValidationMessages.VALIDATE_GENDER,groups = {New.class,Existing.class})
 	private Gender gender;
 	@Past(groups= {New.class,Existing.class})

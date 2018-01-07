@@ -3,7 +3,6 @@ package com.openretails.profile.manager.mapper;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,14 +20,13 @@ public class UserMapper {
 	public UserDTO map(User user) {
 		final UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 		userDTO.setPassword(null);
+		userDTO.setPrimaryMobileNumber(String.valueOf(user.getPrimaryMobileNumber()));
 		return userDTO;
 	}
 
 	public User map(UserDTO userDTO) {
-		userDTO.setUsername(StringUtils.isNotBlank(userDTO.getUsername()) ? userDTO.getUsername().trim().toLowerCase()
-				: userDTO.getUsername());
-		userDTO.setPrimaryEmailId(StringUtils.isNotBlank(userDTO.getPrimaryEmailId())
-				? userDTO.getPrimaryEmailId().toLowerCase() : userDTO.getPrimaryEmailId());
+		userDTO.setUsername(userDTO.getUsername().trim().toLowerCase());
+		userDTO.setPrimaryEmailId(userDTO.getPrimaryEmailId().toLowerCase());
 		return modelMapper.map(userDTO, User.class);
 	}
 

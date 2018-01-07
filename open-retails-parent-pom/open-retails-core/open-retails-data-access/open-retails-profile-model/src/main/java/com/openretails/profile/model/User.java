@@ -73,9 +73,6 @@ public class User extends BaseEntity {
 	@ManyToOne(cascade = { CascadeType.ALL })
 	private Address secondaryAddress;
 
-	@Column(name = "AGE", nullable = false)
-	private Integer age;
-
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private Gender gender;
@@ -107,7 +104,6 @@ public class User extends BaseEntity {
 		userType = user.getUserType();
 		permanentAddress = user.getPermanentAddress();
 		secondaryAddress = user.getSecondaryAddress();
-		age = user.getAge();
 		gender = user.getGender();
 		salary = user.getSalary();
 		roles = user.getRoles();
