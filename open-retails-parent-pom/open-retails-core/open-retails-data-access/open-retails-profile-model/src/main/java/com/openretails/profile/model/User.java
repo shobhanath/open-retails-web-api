@@ -27,7 +27,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = TableNames.USERS,uniqueConstraints=@UniqueConstraint(columnNames={"PRIMARY_EMAIL_ID","USER_NAME"}))
+@Table(name = TableNames.USERS,uniqueConstraints={@UniqueConstraint(columnNames = "PRIMARY_EMAIL_ID"),
+@UniqueConstraint(columnNames = "USER_NAME")})
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
@@ -65,12 +66,12 @@ public class User extends BaseEntity {
 	@Column(nullable=false)
 	private UserType userType;
 
-	@JoinColumn(name = "PERMANENT_ADDRESS_ID")
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "PERMANENT_ADDRESS_ID",unique = true)
+	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 	private Address permanentAddress;
 
-	@JoinColumn(name = "SECONDARY_ADDRESS_ID")
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "SECONDARY_ADDRESS_ID",unique = true)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Address secondaryAddress;
 
 	@Enumerated(EnumType.STRING)

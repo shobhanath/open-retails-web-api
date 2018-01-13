@@ -16,7 +16,9 @@ import com.openretails.common.exception.OpenRetailsDataAccessException;
 import com.openretails.common.utils.Base64;
 import com.openretails.profile.dao.UserDao;
 import com.openretails.profile.dao.properties.PropertyResourceConfig;
+import com.openretails.profile.model.Address;
 import com.openretails.profile.model.User;
+import com.openretails.profile.repository.AddressRepository;
 import com.openretails.profile.repository.UserRepository;
 
 @Repository(SpringBeanIds.USER_DAO)
@@ -27,13 +29,30 @@ public class UserDaoImpl implements UserDao {
 	private UserRepository userRepository;
 
 	@Autowired
+	private AddressRepository addressRepository;
+
+	@Autowired
 	private PropertyResourceConfig propertyResource;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Collection<User> create(Collection<User> users) {
 		try {
-			return userRepository.save(encodePassword(users));
+			return users.stream().map(user -> {
+				final Address primaryAddress = user.getPermanentAddress();
+				if (primaryAddress != null
+						&& (primaryAddress.getIdentity() == null || primaryAddress.getIdentity() == 0)) {
+					user.setPermanentAddress(addressRepository.save(user.getPermanentAddress()));
+				}
+				final Address secondaryAddress = user.getSecondaryAddress();
+				if (secondaryAddress != null
+						&& (secondaryAddress.getIdentity() == null || secondaryAddress.getIdentity() == 0)) {
+					user.setSecondaryAddress(addressRepository.save(user.getSecondaryAddress()));
+				}
+				user.setPassword(Base64.encode(propertyResource.getDbSalt() + user.getPassword()));
+				return userRepository.save(user);
+			}).collect(Collectors.toList());
+
 		} catch (final Exception exception) {
 			throw new OpenRetailsDataAccessException(
 					String.format(DataAccessMessages.FAILED_CREATE_USERS, exception.getMessage()),
@@ -62,13 +81,6 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	private Collection<User> encodePassword(Collection<User> users) {
-		return users.stream().map(existingUser -> {
-			existingUser.setPassword(Base64.encode(propertyResource.getDbSalt() + existingUser.getPassword()));
-			return existingUser;
-		}).collect(Collectors.toList());
-	}
-
 	@Override
 	public Collection<User> findAll(Boolean flag) {
 		final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.getAll()
@@ -81,8 +93,7 @@ public class UserDaoImpl implements UserDao {
 	public Collection<User> findById(Collection<Long> identities, Boolean flag) {
 		final Optional<Collection<User>> optionalUsers = null == flag ? userRepository.findByIdentity(identities)
 				: userRepository.findByIdentity(flag, identities);
-		return optionalUsers
-.filter(users -> !users.isEmpty())
+		return optionalUsers.filter(users -> !users.isEmpty())
 				.orElseThrow(() -> new OpenRetailsDataAccessException(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_ID));
 	}
 
@@ -105,7 +116,7 @@ public class UserDaoImpl implements UserDao {
 				: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userCollection, userCollection);
 		return optionalUsers.filter(userList -> !userList.isEmpty())
 				.orElseThrow(() -> new OpenRetailsDataAccessException(
-				DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
+						DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL));
 
 	}
 
@@ -117,9 +128,7 @@ public class UserDaoImpl implements UserDao {
 				: userRepository.findByUsernameOrPrimaryEmailIdAndObsolete(flag, userLower, userLower);
 		return optionalUser.orElseThrow(() -> new OpenRetailsDataAccessException(
 				new StringBuilder(DataAccessMessages.FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL)
-						.append(ApplicationConstants.COLON)
-						.append(user)
-						.toString()));
+						.append(ApplicationConstants.COLON).append(user).toString()));
 
 	}
 
@@ -134,8 +143,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Collection<Long> findIdByUser(Collection<String> user, Boolean flag) {
-		return findByUser(user, flag).stream().map(User::getIdentity)
-				.collect(Collectors.toList());
+		return findByUser(user, flag).stream().map(User::getIdentity).collect(Collectors.toList());
 	}
 
 	@Override
@@ -145,8 +153,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Collection<String> findUsernameById(Collection<Long> identities, Boolean flag) {
-		return findById(identities, flag).stream().map(User::getUsername)
-				.collect(Collectors.toList());
+		return findById(identities, flag).stream().map(User::getUsername).collect(Collectors.toList());
 	}
 
 	@Override
@@ -164,7 +171,8 @@ public class UserDaoImpl implements UserDao {
 				return existingUser;
 			}).collect(Collectors.toList()));
 		} catch (final Exception exception) {
-			throw new OpenRetailsDataAccessException(DataAccessMessages.FAILED_UPDATE_USERS + exception.getMessage(),
+			throw new OpenRetailsDataAccessException(
+					String.format(DataAccessMessages.FAILED_UPDATE_USERS, exception.getMessage()),
 					exception.getCause());
 		}
 	}
