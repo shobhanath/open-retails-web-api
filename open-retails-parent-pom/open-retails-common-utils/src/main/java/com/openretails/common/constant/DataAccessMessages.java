@@ -8,13 +8,14 @@ public final class DataAccessMessages {
 	/* User */
 	public static final String FAILED_CREATE_USERS = "Failed to create users -> %s";
 	public static final String FAILED_UPDATE_USERS = "Failed to update users -> %s";
-	public static final String FAILED_PARTIAL_UPDATE_USERS = "Failed to partial update users -> %s ";
-	public static final String USERS_NOT_FOUND = "User not found with the given user details ";
-	public static final String FAILED_TO_ENABLE_USERS = "Failed to enable users -> %s ";
-	public static final String FAILED_TO_DISABLE_USERS = "Failed to disable users -> %s ";
+	public static final String USERS_NOT_FOUND = "User not found with the given user details -> %s";
+	public static final String FAILED_TO_ENABLE_USERS = "Failed to enable users -> %s";
+	public static final String FAILED_TO_DISABLE_USERS = "Failed to disable users -> %s";
 	public static final String FAILED_TO_FETCH_ALL_USERS = "Failed to fetch all the users";
-	public static final String FAILED_TO_FETCH_USERS_BY_ID = "Failed to fetch user by id";
-	public static final String FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL = "Failed to fetch users by either username or primary email id";
+	public static final String FAILED_TO_FETCH_USERS_BY_ID = "Failed to fetch user by identity -> %s";
+	public static final String FAILED_TO_FETCH_USERS_BY_IDS = "Failed to fetch user by identities -> %s";
+	public static final String USER_EXIST_BY_EMAIL = "User already exist either with the username or email id -> %s.Incase user is inactive please contact technical admin to activate the user";
+	public static final String FAILED_TO_FETCH_USERS_BY_USERNAME_OR_EMAIL = "Failed to fetch users by either username or primary email id -> %s";
 	public static final String FAILED_TO_FETCH_BY_USERNAME_AND_PASSWORD = "User not found with the given username and password, incorrect username or password";
 
 	/* OfferType */

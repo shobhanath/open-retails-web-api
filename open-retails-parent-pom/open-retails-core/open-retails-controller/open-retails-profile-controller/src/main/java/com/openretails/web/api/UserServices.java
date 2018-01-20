@@ -159,7 +159,7 @@ public class UserServices extends GenericExceptionHandler {
 				active.equals(ApplicationConstants.EMPTY) ? null : Boolean.valueOf(active)), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "${UserServices.findUsernameOrPrimaryEmailByIdentity.value}", notes = "${UserServices.findUsernameOrPrimaryEmailByIdentity.note}")
+	@ApiOperation(value = "${UserServices.findUsernameByIdentity.value}", notes = "${UserServices.findUsernameByIdentity.note}")
 
 	@ApiResponses(value = { @ApiResponse(code = 200, message = ApplicationConstants.OK),
 			@ApiResponse(code = 400, message = ApplicationConstants.BAD_REQUEST, response = ExceptionMessage.class),
@@ -168,10 +168,10 @@ public class UserServices extends GenericExceptionHandler {
 			@ApiResponse(code = 404, message = ApplicationConstants.NOT_FOUND, response = ExceptionMessage.class),
 			@ApiResponse(code = 500, message = ApplicationConstants.INTERNAL_SERVER_ERROR, response = ExceptionMessage.class) })
 
-	@PostMapping(value = "/users/get-emails-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@PostMapping(value = "/users/get-usernames-by-ids", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<Collections<String>> findUsernameOrPrimaryEmailByIdentity(
+	public ResponseEntity<Collections<String>> findUsernameByIdentity(
 			@ApiParam(value = ServiceMessages.IDENTITIES, required = true) @RequestBody @NotNull Collections<Long> identities,
 			@RequestParam(value = ServiceMessages.ACTIVE, required = false, defaultValue = ApplicationConstants.EMPTY) String active) {
 		return new ResponseEntity<>(userManager.findUsernameById(identities,
